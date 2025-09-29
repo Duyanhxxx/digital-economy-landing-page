@@ -1,0 +1,20 @@
+{
+  "name": "digital-economy-landing-page",
+  "version": "1.0.0",
+  "description": "Landing page về kinh tế số và mối quan hệ hạ tầng - thượng tầng",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'Static site - no build needed'",
+    "start": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "digital-economy",
+    "infrastructure",
+    "superstructure",
+    "vietnam",
+    "landing-page"
+  ],
+  "author": "Digital Economy Research",
+  "license": "MIT"
+}
