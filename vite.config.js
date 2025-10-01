@@ -9,9 +9,7 @@ export default defineConfig({
       input: {
         main: 'public/index.html'
       }
-    },
-    // Copy static assets including HTML components
-    copyPublicDir: true
+    }
   },
   server: {
     port: 3000,
@@ -21,6 +19,6 @@ export default defineConfig({
     port: 4173,
     open: true
   },
-  // Ensure components directory is treated as static assets
-  publicDir: 'components'
+  // Đảm bảo copy tất cả files trong public
+  assetsInclude: ['**/*.html']
 })
