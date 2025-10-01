@@ -1,0 +1,212 @@
+<section id="interactive" class="interactive-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Trải Nghiệm Tương Tác</h2>
+            <p class="section-subtitle">Khám phá kinh tế số qua các hoạt động thú vị</p>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="interactive-feature quiz-feature">
+            <div class="feature-header">
+                <h3><i class="fas fa-question-circle"></i> Bộ Câu Hỏi Trắc Nghiệm</h3>
+                <p>Bạn hiểu bao nhiều về kinh tế số?</p>
+            </div>
+            <div class="quiz-container">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quiz-progress"></div>
+                    </div>
+                    <span class="progress-text">Câu <span id="current-question">1</span> / <span id="total-questions">10</span></span>
+                </div>
+                
+                <div class="quiz-content" id="quiz-content">
+                    <div class="question-card">
+                        <h4 id="question-text">Đang tải câu hỏi...</h4>
+                        <div class="answers" id="quiz-answers">
+                            <!-- Answers will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-controls">
+                    <button id="start-quiz" class="btn btn-primary">Bắt Đầu Quiz</button>
+                    <button id="next-question" class="btn btn-secondary" style="display: none;">Câu Tiếp Theo</button>
+                    <button id="restart-quiz" class="btn btn-outline" style="display: none;">Làm Lại</button>
+                </div>
+                
+                <div class="quiz-result" id="quiz-result" style="display: none;">
+                    <div class="result-score">
+                        <h3>Kết Quả Của Bạn</h3>
+                        <div class="score-circle">
+                            <span id="final-score">0</span>/<span id="total-score">10</span>
+                        </div>
+                        <p id="score-message"></p>
+                    </div>
+                    <div class="result-explanation" id="result-explanation">
+                        <!-- Detailed explanations will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ecosystem Builder Game -->
+        <div class="interactive-feature ecosystem-game">
+            <div class="feature-header">
+                <h3><i class="fas fa-puzzle-piece"></i> Game "Xây Dựng Hệ Sinh Thái Số"</h3>
+                <p>Kéo thả các yếu tố để tạo hệ sinh thái kinh tế số cân bằng</p>
+            </div>
+            <div class="game-container">
+                <div class="game-board">
+                    <div class="infrastructure-zone" id="infrastructure-zone">
+                        <h4>Hạ Tầng</h4>
+                        <div class="drop-zone" data-category="infrastructure">
+                            <p>Kéo các yếu tố hạ tầng vào đây</p>
+                        </div>
+                    </div>
+                    <div class="superstructure-zone" id="superstructure-zone">
+                        <h4>Thượng Tầng</h4>
+                        <div class="drop-zone" data-category="superstructure">
+                            <p>Kéo các yếu tố thượng tầng vào đây</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-elements">
+                    <h4>Các Yếu Tố Có Sẵn</h4>
+                    <div class="elements-container" id="game-elements">
+                        <!-- Game elements will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="game-feedback" id="game-feedback">
+                    <div class="balance-meter">
+                        <h4>Độ Cân Bằng Hệ Sinh Thái</h4>
+                        <div class="meter">
+                            <div class="meter-fill" id="balance-meter"></div>
+                        </div>
+                        <p id="balance-text">Bắt đầu xây dựng hệ sinh thái của bạn!</p>
+                    </div>
+                </div>
+                
+                <div class="game-controls">
+                    <button id="reset-game" class="btn btn-outline">Đặt Lại</button>
+                    <button id="get-hint" class="btn btn-secondary">Gợi Ý</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Counter -->
+        <div class="interactive-feature counter-feature">
+            <div class="feature-header">
+                <h3><i class="fas fa-chart-line"></i> Bộ Đếm Thời Gian Thực</h3>
+                <p>Thống kê giao dịch ví điện tử tại Việt Nam</p>
+            </div>
+            <div class="counter-container">
+                <div class="counter-grid">
+                    <div class="counter-item">
+                        <div class="counter-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="counter-content">
+                            <h4>Giao Dịch/Giây</h4>
+                            <div class="counter-number" id="transactions-per-second">0</div>
+                            <p class="counter-label">Ví điện tử toàn quốc</p>
+                        </div>
+                    </div>
+                    
+                    <div class="counter-item">
+                        <div class="counter-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="counter-content">
+                            <h4>Người Dùng Mới</h4>
+                            <div class="counter-number" id="new-users-today">0</div>
+                            <p class="counter-label">Đăng ký hôm nay</p>
+                        </div>
+                    </div>
+                    
+                    <div class="counter-item">
+                        <div class="counter-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="counter-content">
+                            <h4>Tổng Giá Trị</h4>
+                            <div class="counter-number" id="total-value">0</div>
+                            <p class="counter-label">Tỷ VNĐ hôm nay</p>
+                        </div>
+                    </div>
+                    
+                    <div class="counter-item">
+                        <div class="counter-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="counter-content">
+                            <h4>Thanh Toán Di Động</h4>
+                            <div class="counter-number" id="mobile-payments">0</div>
+                            <p class="counter-label">Giao dịch/phút</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="counter-stats">
+                    <h4>Thống Kê Thú Vị</h4>
+                    <div class="stats-list" id="interesting-stats">
+                        <!-- Dynamic stats will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trend Prediction Game -->
+        <div class="interactive-feature prediction-game">
+            <div class="feature-header">
+                <h3><i class="fas fa-crystal-ball"></i> Trò Chơi "Dự Đoán Xu Hướng"</h3>
+                <p>Dự đoán xu hướng công nghệ trong 5 năm tới</p>
+            </div>
+            <div class="prediction-container">
+                <div class="prediction-scenarios" id="prediction-scenarios">
+                    <!-- Scenarios will be loaded here -->
+                </div>
+                
+                <div class="prediction-controls">
+                    <button id="submit-predictions" class="btn btn-primary">Gửi Dự Đoán</button>
+                    <button id="view-expert-predictions" class="btn btn-secondary">Xem Dự Báo Chuyên Gia</button>
+                </div>
+                
+                <div class="prediction-results" id="prediction-results" style="display: none;">
+                    <h4>So Sánh Kết Quả</h4>
+                    <div class="results-comparison">
+                        <!-- Comparison results will be shown here -->
+                    </div>
+                    <div class="accuracy-score">
+                        <h4>Độ Chính Xác Của Bạn</h4>
+                        <div class="accuracy-meter">
+                            <div class="accuracy-fill" id="accuracy-fill"></div>
+                        </div>
+                        <p id="accuracy-text">0% chính xác</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Timeline -->
+        <div class="interactive-feature timeline-feature">
+            <div class="feature-header">
+                <h3><i class="fas fa-history"></i> Lịch Sử Phát Triển Kinh Tế Số</h3>
+                <p>Khám phá hành trình phát triển kinh tế số tại Việt Nam</p>
+            </div>
+            <div class="timeline-container">
+                <div class="timeline" id="interactive-timeline">
+                    <!-- Timeline items will be loaded here -->
+                </div>
+                
+                <div class="timeline-details" id="timeline-details">
+                    <div class="detail-card">
+                        <h4>Chọn một mốc thời gian</h4>
+                        <p>Click vào các điểm trên timeline để xem thông tin chi tiết</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
