@@ -4,10 +4,7 @@ export default defineConfig({
   root: 'public',
   build: {
     outDir: '../dist',
-    emptyOutDir: true,
-    rollupOptions: {
-      input: 'public/index.html'
-    }
+    emptyOutDir: true
   },
   server: {
     port: 3000,
@@ -16,7 +13,5 @@ export default defineConfig({
   preview: {
     port: 4173,
     open: true
-  },
-  // Đảm bảo copy tất cả files trong public
-  assetsInclude: ['**/*.html']
+  }
 })
