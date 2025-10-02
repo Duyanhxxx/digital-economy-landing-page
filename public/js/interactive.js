@@ -2,7 +2,7 @@
 class InteractiveHandler {
     constructor() {
         this.currentQuestion = 1;
-        this.totalQuestions = 3;
+        this.totalQuestions = 10; // tăng từ 3 lên 10
         this.userAnswers = {};
         this.verificationScore = 0;
         this.init();
@@ -100,68 +100,64 @@ class InteractiveHandler {
     }
 
     calculateAssessmentResult() {
-        let score = 0;
-        let criticalThinking = 0;
-        let socialAwareness = 0;
-        let actionOrientation = 0;
+        // Rubric điểm cho từng câu, chuẩn hóa về thang 100
+        const rubric = {
+            q1: { a: 0,  b: 10, c: 7, d: 5 },
+            q2: { a: 0,  b: 10, c: 7, d: 3 },
+            q3: { a: 0,  b: 10, c: 3, d: 7 },
+            q4: { a: 0,  b: 10, c: 7, d: 3 },
+            q5: { a: 0,  b: 10, c: 7, d: 5 },
+            q6: { a: 0,  b: 10, c: 7, d: 3 },
+            q7: { a: 5,  b: 10, c: 7, d: 0 },
+            q8: { a: 0,  b: 10, c: 3, d: 3 },
+            q9: { a: 3,  b: 10, c: 5, d: 0 },
+            q10:{ a: 3,  b: 10, c: 0, d: 8 }
+        };
 
-        // Analyze answers
-        if (this.userAnswers.q1 === 'b') {
-            score += 40;
-            criticalThinking += 2;
-        } else if (this.userAnswers.q1 === 'c') {
-            score += 25;
-            criticalThinking += 1;
-        }
+        let rawScore = 0;
+        let answered = 0;
+        Object.keys(rubric).forEach(q => {
+            const ans = this.userAnswers[q];
+            if (ans && rubric[q][ans] !== undefined) {
+                rawScore += rubric[q][ans];
+                answered++;
+            }
+        });
+        // Chuẩn hóa: mỗi câu tối đa 10 điểm, tổng tối đa 100
+        const score = Math.round(rawScore); // đã ở thang 100 khi đủ 10 câu
 
-        if (this.userAnswers.q2 === 'b') {
-            score += 35;
-            socialAwareness += 2;
-        } else if (this.userAnswers.q2 === 'c') {
-            score += 20;
-            socialAwareness += 1;
-        }
-
-        if (this.userAnswers.q3 === 'b') {
-            score += 25;
-            actionOrientation += 2;
-        } else if (this.userAnswers.q3 === 'd') {
-            score += 15;
-            actionOrientation += 1;
-        }
-
-        // Determine result category
+        // Phân loại kết quả theo ngưỡng
         if (score >= 80) {
             return {
                 title: "Ý Thức Xã Hội Cao",
                 score: score,
-                description: "Bạn có khả năng tư duy phản biện tốt và ý thức xã hội chân thực. Bạn hiểu rõ sự khác biệt giữa xu hướng tự nhiên và xu hướng được tạo ra.",
+                description: "Bạn có tư duy phản biện tốt, nhận diện thuật toán và hành xử có trách nhiệm với cộng đồng.",
                 recommendations: [
-                    "Tiếp tục phát triển kỹ năng phân tích thông tin",
-                    "Chia sẻ kiến thức với bạn bè về cách nhận biết thông tin sai lệch",
-                    "Tham gia các hoạt động cộng đồng có ý nghĩa"
+                    "Tiếp tục chia sẻ phương pháp kiểm chứng nguồn",
+                    "Tham gia dự án cộng đồng, đo lường tác động thực",
+                    "Luân phiên đa dạng hóa nguồn để tránh buồng vang"
                 ]
             };
         } else if (score >= 50) {
             return {
                 title: "Ý Thức Xã Hội Trung Bình",
                 score: score,
-                description: "Bạn có một số nhận thức về ý thức xã hội nhưng cần phát triển thêm kỹ năng tư duy phản biện và khả năng phân tích thông tin.",
+                description: "Bạn có nền tảng nhận thức, nên rèn thêm kỹ năng kiểm chứng và đối thoại văn minh.",
                 recommendations: [
-                    "Học cách kiểm chứng thông tin từ nhiều nguồn",
-                    "Tham gia các khóa học về tư duy phản biện",
-                    "Thực hành đánh giá độ tin cậy của thông tin trên mạng xã hội"
+                    "Áp dụng checklist nguồn: tác giả, bằng chứng, peer-review",
+                    "Tập luyện dừng-cân nhắc trước khi phản ứng cảm xúc",
+                    "Chủ động tham gia hoạt động cộng đồng nhỏ, thực tế"
                 ]
             };
         } else {
             return {
                 title: "Cần Phát Triển Ý Thức Xã Hội",
                 score: score,
-                description: "Bạn cần tăng cường nhận thức về ý thức xã hội và phát triển kỹ năng phân tích thông tin trong môi trường số.",
+                description: "Hãy tăng cường kiểm chứng thông tin và giảm phụ thuộc vào đề xuất thuật toán.",
                 recommendations: [
-                    "Bắt đầu với việc đặt câu hỏi về nguồn gốc thông tin",
-                    "Tìm hiểu về cách thức hoạt động của thuật toán mạng xã hội",
-                    "Tham gia các hoạt động thực tế để hiểu rõ hơn về vấn đề xã hội"
+                    "Mỗi ngày kiểm chứng một thông tin từ 2 nguồn đáng tin",
+                    "Theo dõi các chủ đề đa chiều để giảm thiên kiến",
+                    "Tham gia thảo luận tôn trọng, tránh phản ứng cảm xúc"
                 ]
             };
         }
