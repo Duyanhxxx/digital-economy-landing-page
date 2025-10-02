@@ -153,7 +153,7 @@ class App {
 // Start the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, starting app...');
-    new App();
+    startAppOnce();
 });
 
 // Fallback initialization if DOMContentLoaded already fired
@@ -162,5 +162,11 @@ if (document.readyState === 'loading') {
 } else {
     // Document already loaded
     console.log('Document already loaded, starting app immediately...');
+    startAppOnce();
+}
+
+function startAppOnce() {
+    if (window.__appInitialized) return;
+    window.__appInitialized = true;
     new App();
 }

@@ -142,38 +142,22 @@ class ChatboxHandler {
         const message = this.input?.value.trim();
         if (!message || this.isTyping) return;
 
-        // Add user message
         this.addMessage(message, 'user');
         this.input.value = '';
-
-        // Check if topic is relevant
-        if (!this.isRelevantTopic(message)) {
-            this.addMessage(this.getOffTopicResponse(), 'ai');
-            return;
-        }
-
-        // Show typing indicator
         this.showTyping();
 
         try {
             let response;
             if (this.apiKey) {
-                // Try Gemini API first
                 response = await this.callGeminiAPI(message);
             } else {
-                // Fallback to demo responses
                 response = this.getDemoResponse(message);
             }
-            
-            // Hide typing and show response
             this.hideTyping();
             this.addMessage(response, 'ai');
-            
         } catch (error) {
             console.error('Error getting AI response:', error);
             this.hideTyping();
-            
-            // Fallback to demo response on API error
             const fallbackResponse = this.getDemoResponse(message);
             this.addMessage(fallbackResponse, 'ai');
         }
@@ -290,7 +274,7 @@ Câu hỏi: ${message}`;
 
 📊 **Cơ chế hoạt động**:
 - **Panopticon số**: Giám sát hành vi không người dùng nhận ra
-- **Hegemony văn hóa** (Gramsci): Tạo đồng thuận qua nội dung được lựa chọn
+- **Hegemony văn hóa** (Gramsci): Tạo đồng thuận qua nội dung đường để lựa chọn
 - **Bong bóng thông tin**: Chia rẽ xã hội thành các nhóm tách biệt
 
 🤔 **Triết học**: Thuật toán đặt ra câu hỏi về tự do ý chí - liệu chúng ta có thực sự tự do lựa chọn khi suy nghĩng?
