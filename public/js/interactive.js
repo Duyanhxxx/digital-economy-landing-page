@@ -10,8 +10,8 @@ class InteractiveHandler {
 
     init() {
         this.initializeAssessment();
-        this.initializeTrendAnalyzer();
         this.initializeVerificationGame();
+        this.initializeAlgorithmSandbox();
     }
 
     // ===== SOCIAL CONSCIOUSNESS ASSESSMENT =====
@@ -344,6 +344,81 @@ class InteractiveHandler {
             default:
                 return 'Hãy thử lại!';
         }
+    }
+    
+    // ===== ALGORITHM SANDBOX =====
+    initializeAlgorithmSandbox() {
+        this.sandboxData = [
+            { title: 'Chiến dịch thiện nguyện thực tế', virality: 55, credibility: 90, category: 'community' },
+            { title: 'Bài viết gây sốt nhưng thiếu nguồn', virality: 90, credibility: 30, category: 'viral' },
+            { title: 'Phân tích khoa học có peer-review', virality: 40, credibility: 95, category: 'research' },
+            { title: 'Review sản phẩm kèm mã giảm giá', virality: 75, credibility: 40, category: 'commerce' },
+            { title: 'Phỏng vấn đa góc nhìn', virality: 50, credibility: 80, category: 'dialogue' },
+            { title: 'Tin đồn người nổi tiếng', virality: 85, credibility: 20, category: 'rumor' }
+        ];
+
+        const viralitySlider = document.getElementById('weight-virality');
+        const credibilitySlider = document.getElementById('weight-credibility');
+        const diversitySlider = document.getElementById('weight-diversity');
+
+        const update = () => this.updateAlgorithmSandbox();
+        [viralitySlider, credibilitySlider, diversitySlider].forEach(sl => {
+            if (sl) sl.addEventListener('input', update);
+        });
+
+        this.updateAlgorithmSandbox();
+    }
+
+    updateAlgorithmSandbox() {
+        const vEl = document.getElementById('weight-virality');
+        const cEl = document.getElementById('weight-credibility');
+        const dEl = document.getElementById('weight-diversity');
+        if (!vEl || !cEl || !dEl) return;
+
+        const wV = Number(vEl.value) / 100;
+        const wC = Number(cEl.value) / 100;
+        const wD = Number(dEl.value) / 100;
+
+        const categoryDiversity = {
+            research: 0.9, dialogue: 0.8, community: 0.7, commerce: 0.5, viral: 0.4, rumor: 0.3
+        };
+
+        const scored = this.sandboxData
+            .map(item => {
+                const diversityVal = (categoryDiversity[item.category] || 0.5) * 100;
+                const score = Math.round(wV * item.virality + wC * item.credibility + wD * diversityVal);
+                return { ...item, score };
+            })
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 6);
+
+        const feed = document.getElementById('feed-preview');
+        if (feed) {
+            feed.innerHTML = scored.map(s => `
+                <div class="feed-item">
+                    <div class="feed-title">${s.title}</div>
+                    <div class="feed-meta">
+                        <span class="badge badge-virality">Gây sốt: ${s.virality}</span>
+                        <span class="badge badge-credibility">Tin cậy: ${s.credibility}</span>
+                        <span class="badge badge-diversity">Đa dạng: ${Math.round((categoryDiversity[s.category] || 0.5) * 100)}</span>
+                    </div>
+                    <div class="feed-score">Điểm hiển thị: <strong>${s.score}</strong></div>
+                </div>
+            `).join('');
+        }
+
+        const balanceEl = document.getElementById('algo-balance');
+        if (balanceEl) {
+            balanceEl.textContent = this.computeAlgoBalance(wV, wC, wD);
+        }
+    }
+
+    computeAlgoBalance(wV, wC, wD) {
+        const target = 1 / 3;
+        const diff = Math.abs(wV - target) + Math.abs(wC - target) + Math.abs(wD - target);
+        const maxDiff = 2 / 3;
+        const balance = Math.round(100 - (diff / maxDiff) * 100);
+        return Math.max(0, Math.min(100, balance));
     }
 }
 

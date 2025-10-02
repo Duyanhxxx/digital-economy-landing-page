@@ -595,6 +595,7 @@
     }
     
     .news-cards {
+        display: grid;
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
@@ -678,4 +679,106 @@
         color: #ffffff;
         border: 2px solid #ffffff;
     }
+}
+.algo-sandbox .sandbox-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.algo-sandbox .weight-controls {
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.algo-sandbox .weight-controls .control {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.algo-sandbox .weight-controls label {
+  color: #374151 !important;
+  font-weight: 600;
+}
+
+.algo-sandbox input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e2e8f0, #cbd5e1);
+  outline: none;
+}
+
+.algo-sandbox .control-hint {
+  color: #6b7280 !important;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.algo-sandbox .balance-meter {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border: 2px solid #3b82f6;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  text-align: center;
+}
+
+.feed-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.feed-item {
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 2px solid #e2e8f0;
+  border-radius: 15px;
+  padding: 1rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.feed-title {
+  color: #1e293b !important;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.feed-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #334155 !important;
+}
+
+.badge-virality { border-color: #f59e0b; }
+.badge-credibility { border-color: #10b981; }
+.badge-diversity { border-color: #06b6d4; }
+
+.feed-score {
+  color: #334155 !important;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .algo-sandbox .weight-controls .control {
+    grid-template-columns: 1fr;
+  }
 }
