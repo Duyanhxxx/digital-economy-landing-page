@@ -1,4 +1,4 @@
-// AI Chatbox Handler với Gemini API Integration
+// AI Chatbox Handler cho Ý Thức Xã Hội Số
 class ChatboxHandler {
     constructor() {
         this.apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -12,6 +12,24 @@ class ChatboxHandler {
         this.messages = document.getElementById('chatbox-messages');
         this.input = document.getElementById('chatbox-input-field');
         this.sendBtn = document.getElementById('chatbox-send');
+        
+        // Define relevant topics
+        this.relevantTopics = [
+            // Môn học liên quan
+            'ý thức xã hội', 'triết học', 'chính trị', 'xã hội học', 'tâm lý học xã hội',
+            'truyền thông', 'mạng xã hội', 'thông tin', 'tin giả', 'fake news',
+            'thuật toán', 'algorithm', 'công nghệ', 'số hóa', 'digital',
+            'tư duy phản biện', 'critical thinking', 'phân tích', 'đánh giá',
+            'xu hướng', 'trend', 'viral', 'ảnh hưởng xã hội', 'dư luận',
+            'quyền lực', 'thao túng', 'propaganda', 'ideology', 'ý thức hệ',
+            'văn hóa', 'giá trị', 'chuẩn mực', 'đạo đức', 'ethics',
+            'sinh viên', 'giáo dục', 'học tập', 'nghiên cứu',
+            'cộng đồng', 'xã hội', 'tập thể', 'cá nhân',
+            'thực tế', 'ảo tưởng', 'nhận thức', 'ý thức',
+            'marx', 'marxism', 'hạ tầng', 'thượng tầng', 'kinh tế chính trị',
+            'dân chủ', 'tự do', 'nhân quyền', 'công bằng xã hội',
+            'toàn cầu hóa', 'hiện đại hóa', 'phát triển bền vững'
+        ];
         
         this.init();
         
@@ -62,19 +80,12 @@ class ChatboxHandler {
 
         if (this.input) {
             this.input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
+                if (e.key === 'Enter') {
                     e.preventDefault();
                     this.sendMessage();
                 }
             });
         }
-        
-        // Close on outside click
-        document.addEventListener('click', (e) => {
-            if (this.isOpen && this.chatbox && !this.chatbox.contains(e.target) && !this.toggle.contains(e.target)) {
-                this.closeChatbox();
-            }
-        });
     }
 
     toggleChatbox() {
@@ -86,230 +97,379 @@ class ChatboxHandler {
     }
     
     openChatbox() {
+        this.isOpen = true;
         if (this.chatbox) {
             this.chatbox.classList.add('active');
-            this.chatbox.style.display = 'flex';
-            this.isOpen = true;
-            
-            if (this.input) {
-                setTimeout(() => this.input.focus(), 100);
-            }
+            setTimeout(() => {
+                if (this.input) this.input.focus();
+            }, 300);
         }
     }
-    
+
     closeChatbox() {
+        this.isOpen = false;
         if (this.chatbox) {
             this.chatbox.classList.remove('active');
-            this.chatbox.style.display = 'none';
-            this.isOpen = false;
         }
+    }
+
+    // Check if message is relevant to academic topics
+    isRelevantTopic(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Check if message contains any relevant keywords
+        const hasRelevantKeyword = this.relevantTopics.some(topic => 
+            lowerMessage.includes(topic.toLowerCase())
+        );
+        
+        // Additional context checks
+        const academicContexts = [
+            'môn học', 'bài tập', 'nghiên cứu', 'luận văn', 'báo cáo',
+            'phân tích', 'đánh giá', 'so sánh', 'giải thích', 'tại sao',
+            'như thế nào', 'ảnh hưởng', 'tác động', 'nguyên nhân', 'hậu quả',
+            'quan điểm', 'lý thuyết', 'khái niệm', 'định nghĩa'
+        ];
+        
+        const hasAcademicContext = academicContexts.some(context => 
+            lowerMessage.includes(context)
+        );
+        
+        return hasRelevantKeyword || hasAcademicContext;
     }
 
     async sendMessage() {
-        if (!this.input || !this.messages) return;
-        
-        const message = this.input.value.trim();
+        const message = this.input?.value.trim();
         if (!message || this.isTyping) return;
-        
+
         // Add user message
         this.addMessage(message, 'user');
         this.input.value = '';
-        
-        if (this.sendBtn) {
-            this.sendBtn.disabled = true;
+
+        // Check if topic is relevant
+        if (!this.isRelevantTopic(message)) {
+            this.addMessage(this.getOffTopicResponse(), 'ai');
+            return;
         }
-        
+
         // Show typing indicator
         this.showTyping();
-        
+
         try {
             let response;
             if (this.apiKey) {
+                // Try Gemini API first
                 response = await this.callGeminiAPI(message);
             } else {
+                // Fallback to demo responses
                 response = this.getDemoResponse(message);
             }
             
+            // Hide typing and show response
             this.hideTyping();
             this.addMessage(response, 'ai');
+            
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error getting AI response:', error);
             this.hideTyping();
             
-            // Check if it's an API-related error and fallback to demo
-            if (error.message && (error.message.includes('404') || error.message.includes('403') || error.message.includes('not found'))) {
-                console.log('API error detected, falling back to demo mode');
-                const demoResponse = this.getDemoResponse(message);
-                this.addMessage(`[Demo Mode] ${demoResponse}`, 'ai');
-            } else {
-                this.addMessage('Xin lỗi, tôi gặp sự cố kỹ thuật. Đang chuyển sang chế độ demo...', 'ai');
-                setTimeout(() => {
-                    const demoResponse = this.getDemoResponse(message);
-                    this.addMessage(demoResponse, 'ai');
-                }, 1000);
-            }
-        }
-        
-        if (this.sendBtn) {
-            this.sendBtn.disabled = false;
+            // Fallback to demo response on API error
+            const fallbackResponse = this.getDemoResponse(message);
+            this.addMessage(fallbackResponse, 'ai');
         }
     }
 
+    getOffTopicResponse() {
+        const responses = [
+            `Xin lỗi, tôi chỉ có thể trả lời các câu hỏi liên quan đến:
+
+📚 **Môn học**: Ý thức xã hội, triết học, chính trị học, xã hội học
+🧠 **Chủ đề chính**: 
+- Ý thức xã hội trong thời đại số
+- Tác động của mạng xã hội đến tư duy
+- Tư duy phản biện và phân tích thông tin
+- Triết học chính trị và xã hội
+
+Bạn có thể hỏi lại về những chủ đề này không?`,
+
+            `Tôi được thiết kế để hỗ trợ học tập về **ý thức xã hội trong bối cảnh số** và các môn học liên quan như triết học, chính trị học.
+
+Hãy hỏi tôi về:
+- Cách phân tích xu hướng xã hội
+- Lý thuyết triết học về ý thức
+- Tác động chính trị của công nghệ số
+- Phương pháp nghiên cứu xã hội học
+
+Bạn muốn tìm hiểu điều gì trong những lĩnh vực này?`,
+
+            `Câu hỏi của bạn nằm ngoài phạm vi chuyên môn của tôi. 
+
+Tôi chỉ hỗ trợ các vấn đề học thuật về:
+🔍 Phân tích ý thức xã hội
+📱 Tác động của công nghệ số
+🤔 Triết học và tư duy phản biện  
+🏛️ Chính trị học và quyền lực
+
+Bạn có câu hỏi nào khác về những chủ đề này không?`
+        ];
+        
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+
     async callGeminiAPI(message) {
-        try {
-            const { GoogleGenerativeAI } = await import('https://esm.run/@google/generative-ai');
-            
-            const genAI = new GoogleGenerativeAI(this.apiKey);
-            
-            // Use Gemini 2.0 Flash - the latest and most powerful model
-            const model = genAI.getGenerativeModel({ 
-                model: "gemini-2.0-flash-exp",
-                generationConfig: {
-                    temperature: 0.7,
-                    topP: 0.8,
-                    topK: 40,
-                    maxOutputTokens: 1024,
-                }
-            });
-            
-            const prompt = `Bạn là một chuyên gia triết học chính trị và kinh tế chính trị, có chuyên môn sâu về:
-            - Triết học Mác-Lênin về mối quan hệ hạ tầng - thượng tầng
-            - Kinh tế chính trị học về chuyển đổi số
-            - Triết học về tác động của công nghệ đến xã hội
-            - Lý thuyết chính trị về kinh tế số
-            
-            Hãy trả lời câu hỏi sau từ góc độ triết học chính trị, với phân tích sâu sắc về bản chất và quy luật (tối đa 250 từ):
-            
-            Câu hỏi: ${message}
-            
-            Lưu ý: 
-            - CHỈ trả lời các câu hỏi liên quan đến triết học, chính trị, kinh tế chính trị, và kinh tế số
-            - Nếu câu hỏi không liên quan, hãy từ chối một cách lịch sự và hướng dẫn về chủ đề phù hợp
-            - Sử dụng thuật ngữ triết học và chính trị học chính xác
-            - Phân tích theo phương pháp luận duy vật biện chứng`;
-            
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            return response.text();
-            
-        } catch (error) {
-            console.error('Gemini API Error:', error);
-            
-            // If 2.0 flash doesn't work, try other versions
-            if (error.message && error.message.includes('not found')) {
-                try {
-                    console.log('Trying alternative model names...');
-                    const { GoogleGenerativeAI } = await import('https://esm.run/@google/generative-ai');
-                    const genAI = new GoogleGenerativeAI(this.apiKey);
-                    
-                    // Try different model names for Gemini Flash
-                    const modelNames = [
-                        "gemini-2.0-flash",
-                        "gemini-1.5-flash",
-                        "gemini-1.5-flash-latest",
-                        "models/gemini-1.5-flash"
-                    ];
-                    
-                    for (const modelName of modelNames) {
-                        try {
-                            const model = genAI.getGenerativeModel({ model: modelName });
-                            const result = await model.generateContent(prompt);
-                            const response = await result.response;
-                            console.log(`Successfully used model: ${modelName}`);
-                            return response.text();
-                        } catch (e) {
-                            console.log(`Model ${modelName} failed:`, e.message);
-                            continue;
-                        }
-                    }
-                } catch (fallbackError) {
-                    console.error('All model attempts failed:', fallbackError);
-                }
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${this.apiKey}`;
+        
+        const prompt = `Bạn là một AI trợ lý chuyên về ý thức xã hội trong thời đại số, triết học và chính trị học. 
+
+QUAN TRỌNG: Chỉ trả lời các câu hỏi liên quan đến:
+- Ý thức xã hội và tác động của công nghệ số
+- Triết học (đặc biệt là triết học xã hội, nhận thức luận)
+- Chính trị học (quyền lực, dư luận, thao túng thông tin)
+- Xã hội học (xu hướng, cộng đồng, văn hóa số)
+- Tư duy phản biện và phân tích thông tin
+- Giáo dục và nghiên cứu học thuật
+
+Nếu câu hỏi không liên quan đến những chủ đề trên, hãy từ chối một cách lịch sự và hướng dẫn người dùng hỏi về đúng chủ đề.
+
+Câu hỏi: ${message}
+
+Hãy trả lời bằng tiếng Việt, mang tính học thuật nhưng dễ hiểu (tối đa 250 từ).`;
+
+        const requestBody = {
+            contents: [{
+                parts: [{
+                    text: prompt
+                }]
+            }],
+            generationConfig: {
+                temperature: 0.7,
+                topK: 40,
+                topP: 0.95,
+                maxOutputTokens: 350,
             }
-            
-            throw error;
+        };
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            throw new Error('Invalid API response format');
         }
     }
 
     getDemoResponse(message) {
         const lowerMessage = message.toLowerCase();
         
-        // Check if question is related to allowed topics
-        const allowedTopics = ['kinh tế', 'chính trị', 'triết học', 'hạ tầng', 'thượng tầng', 'xã hội', 'công nghệ', 'số hóa', 'chuyển đổi', 'mác', 'lênin', 'duy vật'];
-        const isRelevant = allowedTopics.some(topic => lowerMessage.includes(topic));
-        
-        if (!isRelevant) {
-            return 'Xin lỗi, tôi chỉ có thể thảo luận về các chủ đề liên quan đến triết học chính trị, kinh tế chính trị, và mối quan hệ hạ tầng - thượng tầng trong kinh tế số. Bạn có thể hỏi về: triết học Mác-Lênin, kinh tế chính trị số, tác động xã hội của công nghệ, hay lý thuyết về chuyển đổi số.';
+        // Responses about fake news and information analysis
+        if (lowerMessage.includes('tin giả') || lowerMessage.includes('fake news') || lowerMessage.includes('thông tin sai')) {
+            return `**Phân tích tin giả từ góc độ triết học nhận thức:**
+
+🔍 **Bản chất nhận thức**: Tin giả khai thác khuynh hướng xác nhận (confirmation bias) - con người có xu hướng tin những thông tin phù hợp với quan điểm có sẵn.
+
+📚 **Phương pháp luận**:
+- **Nghi ngờ có phương pháp** (Descartes): Đặt câu hỏi về mọi thông tin
+- **Kiểm chứng thực nghiệm**: Tìm bằng chứng cụ thể, có thể đo lường
+- **Đối thoại Socrates**: Đặt câu hỏi liên tiếp để khám pháa sự thật
+
+🏛️ **Góc độ chính trị**: Tin giả là công cụ quyền lực để định hướng dư luận, tạo ra "sự thật" phục vụ lợi ích nhóm.`;
         }
         
-        const responses = {
-            'hạ tầng': 'Theo quan điểm triết học Mác-Lênin, hạ tầng kinh tế số bao gồm các lực lượng sản xuất công nghệ và quan hệ sản xuất số. Đây là nền tảng vật chất quyết định kiến trúc thượng tầng chính trị-xã hội, tạo ra những biến đổi căn bản trong cấu trúc xã hội hiện đại.',
-            
-            'thượng tầng': 'Kiến trúc thượng tầng trong kỷ nguyên số bao gồm hệ thống chính trị, pháp luật, ý thức hệ và văn hóa được định hình bởi hạ tầng công nghệ. Sự tác động ngược của thượng tầng lên hạ tầng thể hiện qua các chính sách số hóa và quản trị công nghệ.',
-            
-            'kinh tế số': 'Kinh tế số là hình thái mới của phương thức sản xuất, thể hiện sự phát triển của lực lượng sản xuất công nghệ. Nó tạo ra những mâu thuẫn mới giữa tính chất xã hội của sản xuất và tính chất tư nhân của chiếm hữu trong không gian số.',
-            
-            'chuyển đổi số': 'Chuyển đổi số là quá trình cách mạng công nghệ, thể hiện quy luật phát triển của lực lượng sản xuất. Đây là bước nhảy vọt chất lượng trong phương thức sản xuất, tạo ra những biến đổi sâu sắc trong quan hệ sản xuất và cấu trúc xã hội.',
-            
-            'triết học': 'Triết học về kinh tế số nghiên cứu những quy luật khách quan của sự phát triển xã hội trong kỷ nguyên công nghệ. Nó vận dụng phương pháp luận duy vật biện chứng để phân tích mâu thuẫn giữa hạ tầng công nghệ và thượng tầng chính trị.',
-            
-            'chính trị': 'Chính trị trong kinh tế số phản ánh lợi ích của các giai cấp xã hội trong việc kiểm soát và phân phối tài nguyên công nghệ. Quyền lực chính trị được tái cấu trúc thông qua việc nắm giữ dữ liệu và công nghệ số.',
-            
-            'mác': 'Lý thuyết Mác về mối quan hệ hạ tầng - thượng tầng vẫn có giá trị trong việc phân tích kinh tế số. Hạ tầng công nghệ số quyết định thượng tầng chính trị-pháp lý, đồng thời chịu tác động ngược từ các chính sách và thể chế.',
-            
-            'default': 'Tôi là chuyên gia triết học chính trị, chuyên nghiên cứu mối quan hệ hạ tầng - thượng tầng trong kinh tế số. Bạn có thể hỏi tôi về: triết học Mác-Lênin, kinh tế chính trị số, lý thuyết xã hội về công nghệ, hay phân tích triết học về chuyển đổi số.'
-        };
-        
-        for (const [key, response] of Object.entries(responses)) {
-            if (key !== 'default' && lowerMessage.includes(key)) {
-                return response;
-            }
+        // Responses about algorithms and social media from political perspective
+        if (lowerMessage.includes('thuật toán') || lowerMessage.includes('algorithm') || lowerMessage.includes('mạng xã hội')) {
+            return `**Thuật toán mạng xã hội: Phân tích chính trị học**
+
+🏛️ **Quyền lực số**: Thuật toán là hình thức quyền lực mới - "algorithmic governance" (Foucault hiện đại)
+
+📊 **Cơ chế hoạt động**:
+- **Panopticon số**: Giám sát hành vi không người dùng nhận ra
+- **Hegemony văn hóa** (Gramsci): Tạo đồng thuận qua nội dung được lựa chọn
+- **Bong bóng thông tin**: Chia rẽ xã hội thành các nhóm tách biệt
+
+🤔 **Triết học**: Thuật toán đặt ra câu hỏi về tự do ý chí - liệu chúng ta có thực sự tự do lựa chọn khi suy nghĩng?
+
+**Ý nghĩa chính trị**: Ai kiểm soát thuật toán sẽ kiểm soát ý thức xã hội.`;
         }
-        return responses.default;
+        
+        // Responses about critical thinking from philosophical perspective
+        if (lowerMessage.includes('tư duy phản biện') || lowerMessage.includes('phân tích') || lowerMessage.includes('critical thinking')) {
+            return `**Tư duy phản biện: Nền tảng triết học**
+
+🧠 **Kant và "Sapere aude!"**: "Hãy dám sử dụng lý trí của chính mình"
+
+📚 **Phương pháp triết học**:
+- **Biện chứng** (Hegel): Thesis → Antithesis → Synthesis
+- **Hiện tượng học** (Husserl): "Đặt trong ngoặc" các định kiến
+- **Hermeneutics**: Hiểu nghĩa trong bối cảnh
+
+🔍 **Ứng dụng thực tế**:
+1. **Phân tích ngôn ngữ**: Từ ngữ nào được sử dụng? Tại sao?
+2. **Tìm hiểu bối cảnh**: Ai nói? Khi nào? Vì mục đích gì?
+3. **Đối chiếu quan điểm**: Có tiếng nói đối lập nào không?
+4. **Phản tư về bản thân**: Tôi có định kiến gì không?
+
+**Mục tiêu**: Đạt được "epoché" - trạng thái treo lơ lửng phán đoán để nhìn nhận khách quan.`;
+        }
+        
+        // Responses about social consciousness from Marxist perspective
+        if (lowerMessage.includes('ý thức xã hội') || lowerMessage.includes('ý thức hệ') || lowerMessage.includes('ideology')) {
+            return `**Ý thức xã hội: Phân tích Marxist**
+
+🏭 **Marx và ý thức xã hội**:
+- "Tồn tại xã hội quyết định ý thức xã hội"
+- Ý thức là sản phẩm của điều kiện vật chất
+
+📱 **Trong thời đại số**:
+- **Hạ tầng mới**: Nền tảng công nghệ, thuật toán
+- **Thượng tầng mới**: Văn hóa mạng, giá trị số
+
+🤔 **Câu hỏi triết học**: Liệu ý thức số có còn phản ánh thực tại hay đã trở thành "ý thức giả tạo" (false consciousness)?
+
+🔄 **Mối quan hệ biện chứng**:
+- Công nghệ định hình ý thức
+- Ý thức lại tác động ngược lại công nghệ
+- Tạo ra chu trình phản hồi phức tạp
+
+**Kết luận**: Cần phân biệt ý thức "tự phát" và ý thức "được sản xuất" bởi các lực lượng kinh tế-chính trị.`;
+        }
+        
+        // Responses about power and manipulation
+        if (lowerMessage.includes('quyền lực') || lowerMessage.includes('thao túng') || lowerMessage.includes('propaganda')) {
+            return `**Quyền lực và thao túng trong thời đại số**
+
+🏛️ **Foucault và quyền lực**:
+- Quyền lực không chỉ là áp bức mà còn là "sản xuất" tri thức
+- "Biopower": Kiểm soát qua dữ liệu và thuật toán
+
+📊 **Các hình thức thao túng**:
+- **Soft power**: Ảnh hưởng qua văn hóa, giải trí
+- **Astroturfing**: Tạo ra phong trào "cỏ rễ" giả
+- **Gaslighting tập thể**: Làm xã hội nghi ngờ nhận thức của chính mình
+
+🧠 **Chomsky và "Manufacturing Consent"**:
+- Truyền thông tạo ra sự đồng thuận
+- 5 bộ lọc thông tin trong xã hội
+
+**Phòng chống**: Phát triển "ý thức giai cấp" mới - nhận thức về cách thức hoạt động của quyền lực số.`;
+        }
+        
+        // Responses about education and research methodology
+        if (lowerMessage.includes('nghiên cứu') || lowerMessage.includes('phương pháp') || lowerMessage.includes('học thuật')) {
+            return `**Phương pháp nghiên cứu ý thức xã hội số**
+
+📚 **Đa ngành tích hợp**:
+- **Xã hội học**: Khảo sát, phỏng vấn về hành vi số
+- **Tâm lý học**: Nghiên cứu tác động nhận thức
+- **Chính trị học**: Phân tích quyền lực và ảnh hưởng
+- **Triết học**: Phản tư về bản chất và ý nghĩa
+
+🔍 **Phương pháp cụ thể**:
+- **Ethnography số**: Quan sát tham gia trong cộng đồng online
+- **Phân tích diễn ngôn**: Nghiên cứu ngôn ngữ và ý nghĩa
+- **Big data analysis**: Phân tích xu hướng quy mô lớn
+- **Phenomenology**: Nghiên cứu trải nghiệm chủ quan
+
+📊 **Thách thức đạo đức**:
+- Quyền riêng tư vs nghiên cứu
+- Tính khách quan trong môi trường bị thuật toán định hướng
+- Trách nhiệm của nhà nghiên cứu với xã hội`;
+        }
+        
+        // Responses about Vietnamese context and students
+        if (lowerMessage.includes('sinh viên') || lowerMessage.includes('việt nam') || lowerMessage.includes('giáo dục')) {
+            return `**Ý thức xã hội số trong bối cảnh Việt Nam**
+
+🇻🇳 **Đặc thù văn hóa**:
+- **Tập thể vs cá nhân**: Mạng xã hội tăng cường cá nhân hóa
+- **Tôn trọng thầy cô vs tư duy độc lập**: Cần cân bằng
+- **Truyền thống vs hiện đại**: Xung đột giá trị
+
+📚 **Thách thức giáo dục**:
+- Từ "học thuộc lòng" sang "tư duy phản biện"
+- Phát triển khả năng phân tích thông tin
+- Giữ gìn bản sắc trong toàn cầu hóa số
+
+🎯 **Mục tiêu cho sinh viên**:
+- **Ý thức phê phán**: Không tiếp nhận thông tin một cách thụ động
+- **Trách nhiệm xã hội**: Sử dụng công nghệ có ý thức
+- **Cân bằng**: Hưởng lợi từ công nghệ nhưng không bị chi phối
+
+**Lời khuyên**: Hãy trở thành "công dân số" có trách nhiệm, không chỉ là "người tiêu dùng số".`;
+        }
+        
+        // Default academic response
+        return `Cảm ơn bạn đã quan tâm đến nghiên cứu về ý thức xã hội trong thời đại số! 
+
+📚 **Tôi có thể hỗ trợ bạn về**:
+- **Triết học**: Nhận thức luận, triết học xã hội, đạo đức học
+- **Chính trị học**: Quyền lực, dư luận, thao túng thông tin  
+- **Xã hội học**: Xu hướng, cộng đồng, văn hóa số
+- **Phương pháp nghiên cứu**: Cách phân tích và đánh giá thông tin
+
+🎯 **Chủ đề chính**: Ý thức xã hội có còn phản ánh thực tại hay đã bị "sản xuất" bởi các nhóm quyền lực?
+
+Hãy đặt câu hỏi cụ thể về những lĩnh vực này để tôi có thể hỗ trợ bạn tốt nhất trong việc học tập và nghiên cứu! 🤔`;
     }
 
     addMessage(content, type) {
-        if (!this.messages) return;
-
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${type}-message`;
         
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
-        contentDiv.textContent = content;
+        contentDiv.innerHTML = content.replace(/\n/g, '<br>');
         
         messageDiv.appendChild(contentDiv);
-        this.messages.appendChild(messageDiv);
-        this.messages.scrollTop = this.messages.scrollHeight;
+        this.messages?.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        if (this.messages) {
+            this.messages.scrollTop = this.messages.scrollHeight;
+        }
     }
 
     showTyping() {
-        if (!this.messages) return;
-        
         this.isTyping = true;
         const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
+        typingDiv.className = 'message ai-message typing-indicator';
+        typingDiv.id = 'typing-indicator';
         typingDiv.innerHTML = `
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
+            <div class="message-content">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         `;
-        this.messages.appendChild(typingDiv);
-        this.messages.scrollTop = this.messages.scrollHeight;
+        this.messages?.appendChild(typingDiv);
+        if (this.messages) {
+            this.messages.scrollTop = this.messages.scrollHeight;
+        }
     }
-    
+
     hideTyping() {
         this.isTyping = false;
-        const typingIndicator = this.messages && this.messages.querySelector('.typing-indicator');
+        const typingIndicator = document.getElementById('typing-indicator');
         if (typingIndicator) {
             typingIndicator.remove();
         }
     }
 
     setupAIResponses() {
-        // This method is kept for backward compatibility
-        // The actual responses are now handled in getDemoResponse()
-        console.log('AI responses setup completed');
+        // Additional setup if needed
+        console.log('Academic AI Chatbox for Social Consciousness initialized');
     }
 }
 

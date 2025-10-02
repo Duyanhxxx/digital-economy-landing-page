@@ -1,210 +1,169 @@
-<section id="interactive" class="interactive-section">
+<section id="interactive" class="interactive">
     <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Trải Nghiệm Tương Tác</h2>
-            <p class="section-subtitle">Khám phá kinh tế số qua các hoạt động thú vị</p>
-        </div>
-
-        <!-- Quiz Section -->
-        <div class="interactive-feature quiz-feature">
-            <div class="feature-header">
-                <h3><i class="fas fa-question-circle"></i> Bộ Câu Hỏi Trắc Nghiệm</h3>
-                <p>Bạn hiểu bao nhiều về kinh tế số?</p>
-            </div>
-            <div class="quiz-container">
-                <div class="quiz-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="quiz-progress"></div>
-                    </div>
-                    <span class="progress-text">Câu <span id="current-question">1</span> / <span id="total-questions">10</span></span>
-                </div>
-                
-                <div class="quiz-content" id="quiz-content">
-                    <div class="question-card">
-                        <h4 id="question-text">Đang tải câu hỏi...</h4>
-                        <div class="answers" id="quiz-answers">
-                            <!-- Answers will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="quiz-controls">
-                    <button id="start-quiz" class="btn btn-primary">Bắt Đầu Quiz</button>
-                    <button id="next-question" class="btn btn-secondary" style="display: none;">Câu Tiếp Theo</button>
-                    <button id="restart-quiz" class="btn btn-outline" style="display: none;">Làm Lại</button>
-                </div>
-                
-                <div class="quiz-result" id="quiz-result" style="display: none;">
-                    <div class="result-score">
-                        <h3>Kết Quả Của Bạn</h3>
-                        <div class="score-circle">
-                            <span id="final-score">0</span>/<span id="total-score">10</span>
-                        </div>
-                        <p id="score-message"></p>
-                    </div>
-                    <div class="result-explanation" id="result-explanation">
-                        <!-- Detailed explanations will be shown here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ecosystem Builder Game -->
-        <div class="interactive-feature ecosystem-game">
-            <div class="feature-header">
-                <h3><i class="fas fa-puzzle-piece"></i> Game "Xây Dựng Hệ Sinh Thái Số"</h3>
-                <p>Kéo thả các yếu tố để tạo hệ sinh thái kinh tế số cân bằng</p>
-            </div>
-            <div class="game-container">
-                <div class="game-board">
-                    <div class="infrastructure-zone" id="infrastructure-zone">
-                        <h4>Hạ Tầng</h4>
-                        <div class="drop-zone" data-category="infrastructure">
-                            <p>Kéo các yếu tố hạ tầng vào đây</p>
-                        </div>
-                    </div>
-                    <div class="superstructure-zone" id="superstructure-zone">
-                        <h4>Thượng Tầng</h4>
-                        <div class="drop-zone" data-category="superstructure">
-                            <p>Kéo các yếu tố thượng tầng vào đây</p>
-                        </div>
+        <h2 class="section-title">Trải Nghiệm Tương Tác</h2>
+        <p class="section-subtitle">Khám phá và đánh giá ý thức xã hội của bạn</p>
+        
+        <!-- Social Consciousness Assessment -->
+        <div class="interactive-module">
+            <h3><i class="fas fa-poll"></i> Đánh Giá Ý Thức Xã Hội</h3>
+            <div class="assessment-container">
+                <div class="question-card active" data-question="1">
+                    <h4>Khi thấy một xu hướng mới trên mạng xã hội, bạn thường:</h4>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="a">
+                            <span>Ngay lập tức tham gia và chia sẻ</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="b">
+                            <span>Tìm hiểu nguồn gốc và ý nghĩa trước khi quyết định</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="c">
+                            <span>Quan sát một thời gian rồi mới tham gia</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="d">
+                            <span>Thường không quan tâm đến các xu hướng</span>
+                        </label>
                     </div>
                 </div>
                 
-                <div class="game-elements">
-                    <h4>Các Yếu Tố Có Sẵn</h4>
-                    <div class="elements-container" id="game-elements">
-                        <!-- Game elements will be loaded here -->
+                <div class="question-card" data-question="2">
+                    <h4>Bạn tin rằng thông tin trên mạng xã hội:</h4>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="a">
+                            <span>Luôn phản ánh sự thật</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="b">
+                            <span>Cần được kiểm chứng từ nhiều nguồn</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="c">
+                            <span>Thường bị biến tướng hoặc cường điệu</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="d">
+                            <span>Hoàn toàn không đáng tin</span>
+                        </label>
                     </div>
                 </div>
                 
-                <div class="game-feedback" id="game-feedback">
-                    <div class="balance-meter">
-                        <h4>Độ Cân Bằng Hệ Sinh Thái</h4>
-                        <div class="meter">
-                            <div class="meter-fill" id="balance-meter"></div>
-                        </div>
-                        <p id="balance-text">Bắt đầu xây dựng hệ sinh thái của bạn!</p>
+                <div class="question-card" data-question="3">
+                    <h4>Khi tham gia hoạt động thiện nguyện, động lực chính của bạn là:</h4>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="a">
+                            <span>Muốn có nội dung đăng lên mạng xã hội</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="b">
+                            <span>Thực sự muốn giúp đỡ cộng đồng</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="c">
+                            <span>Theo bạn bè và xu hướng</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="d">
+                            <span>Để tích lũy kinh nghiệm cá nhân</span>
+                        </label>
                     </div>
                 </div>
                 
-                <div class="game-controls">
-                    <button id="reset-game" class="btn btn-outline">Đặt Lại</button>
-                    <button id="get-hint" class="btn btn-secondary">Gợi Ý</button>
+                <div class="navigation-buttons">
+                    <button class="btn-prev" onclick="previousQuestion()">Câu trước</button>
+                    <button class="btn-next" onclick="nextQuestion()">Câu tiếp</button>
+                    <button class="btn-result" onclick="showResult()" style="display: none;">Xem kết quả</button>
+                </div>
+                
+                <div class="result-container" style="display: none;">
+                    <h4>Kết quả đánh giá của bạn:</h4>
+                    <div class="result-content"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Real-time Counter -->
-        <div class="interactive-feature counter-feature">
-            <div class="feature-header">
-                <h3><i class="fas fa-chart-line"></i> Bộ Đếm Thời Gian Thực</h3>
-                <p>Thống kê giao dịch ví điện tử tại Việt Nam</p>
-            </div>
-            <div class="counter-container">
-                <div class="counter-grid">
-                    <div class="counter-item">
-                        <div class="counter-icon">
-                            <i class="fas fa-wallet"></i>
+        
+        <!-- Trend Analysis Tool -->
+        <div class="interactive-module">
+            <h3><i class="fas fa-chart-line"></i> Công Cụ Phân Tích Xu Hướng</h3>
+            <div class="trend-analyzer">
+                <div class="input-section">
+                    <label for="trend-input">Nhập một xu hướng bạn quan tâm:</label>
+                    <input type="text" id="trend-input" placeholder="Ví dụ: #ZeroWaste, #DigitalDetox...">
+                    <button onclick="analyzeTrend()">Phân tích</button>
+                </div>
+                <div class="analysis-result" id="trend-result" style="display: none;">
+                    <div class="analysis-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Mức độ tự nhiên:</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="natural-score"></div>
+                            </div>
                         </div>
-                        <div class="counter-content">
-                            <h4>Giao Dịch/Giây</h4>
-                            <div class="counter-number" id="transactions-per-second">0</div>
-                            <p class="counter-label">Ví điện tử toàn quốc</p>
+                        <div class="metric">
+                            <span class="metric-label">Khả năng bị thao túng:</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="manipulation-score"></div>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Tác động xã hội:</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="impact-score"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analysis-tips">
+                        <h5>Gợi ý đánh giá:</h5>
+                        <ul id="analysis-tips-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information Verification Game -->
+        <div class="interactive-module">
+            <h3><i class="fas fa-search"></i> Trò Chơi Kiểm Chứng Thông Tin</h3>
+            <div class="verification-game">
+                <div class="game-instruction">
+                    <p>Đánh giá độ tin cậy của các thông tin sau đây:</p>
+                </div>
+                <div class="news-cards">
+                    <div class="news-card" data-credibility="low">
+                        <h5>"Uống nước chanh mỗi sáng giúp giảm 10kg trong 1 tuần"</h5>
+                        <p>Chia sẻ bởi: Trang Facebook có 50k followers</p>
+                        <div class="credibility-buttons">
+                            <button onclick="checkCredibility(this, 'low')">Tin cậy</button>
+                            <button onclick="checkCredibility(this, 'low')">Nghi ngờ</button>
+                            <button onclick="checkCredibility(this, 'low')">Không tin cậy</button>
                         </div>
                     </div>
                     
-                    <div class="counter-item">
-                        <div class="counter-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="counter-content">
-                            <h4>Người Dùng Mới</h4>
-                            <div class="counter-number" id="new-users-today">0</div>
-                            <p class="counter-label">Đăng ký hôm nay</p>
-                        </div>
-                    </div>
-                    
-                    <div class="counter-item">
-                        <div class="counter-icon">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </div>
-                        <div class="counter-content">
-                            <h4>Tổng Giá Trị</h4>
-                            <div class="counter-number" id="total-value">0</div>
-                            <p class="counter-label">Tỷ VNĐ hôm nay</p>
+                    <div class="news-card" data-credibility="high">
+                        <h5>"Nghiên cứu mới cho thấy tác động của mạng xã hội đến sức khỏe tâm thần"</h5>
+                        <p>Nguồn: Tạp chí khoa học Nature, có peer review</p>
+                        <div class="credibility-buttons">
+                            <button onclick="checkCredibility(this, 'high')">Tin cậy</button>
+                            <button onclick="checkCredibility(this, 'high')">Nghi ngờ</button>
+                            <button onclick="checkCredibility(this, 'high')">Không tin cậy</button>
                         </div>
                     </div>
                     
-                    <div class="counter-item">
-                        <div class="counter-icon">
-                            <i class="fas fa-mobile-alt"></i>
+                    <div class="news-card" data-credibility="medium">
+                        <h5>"Sinh viên Việt Nam đứng top 3 thế giới về kỹ năng công nghệ"</h5>
+                        <p>Nguồn: Báo điện tử, trích dẫn từ khảo sát quốc tế</p>
+                        <div class="credibility-buttons">
+                            <button onclick="checkCredibility(this, 'medium')">Tin cậy</button>
+                            <button onclick="checkCredibility(this, 'medium')">Nghi ngờ</button>
+                            <button onclick="checkCredibility(this, 'medium')">Không tin cậy</button>
                         </div>
-                        <div class="counter-content">
-                            <h4>Thanh Toán Di Động</h4>
-                            <div class="counter-number" id="mobile-payments">0</div>
-                            <p class="counter-label">Giao dịch/phút</p>
-                        </div>
                     </div>
                 </div>
-                
-                <div class="counter-stats">
-                    <h4>Thống Kê Thú Vị</h4>
-                    <div class="stats-list" id="interesting-stats">
-                        <!-- Dynamic stats will be loaded here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Trend Prediction Game -->
-        <div class="interactive-feature prediction-game">
-            <div class="feature-header">
-                <h3><i class="fas fa-crystal-ball"></i> Trò Chơi "Dự Đoán Xu Hướng"</h3>
-                <p>Dự đoán xu hướng công nghệ trong 5 năm tới</p>
-            </div>
-            <div class="prediction-container">
-                <div class="prediction-scenarios" id="prediction-scenarios">
-                    <!-- Scenarios will be loaded here -->
-                </div>
-                
-                <div class="prediction-controls">
-                    <button id="submit-predictions" class="btn btn-primary">Gửi Dự Đoán</button>
-                    <button id="view-expert-predictions" class="btn btn-secondary">Xem Dự Báo Chuyên Gia</button>
-                </div>
-                
-                <div class="prediction-results" id="prediction-results" style="display: none;">
-                    <h4>So Sánh Kết Quả</h4>
-                    <div class="results-comparison">
-                        <!-- Comparison results will be shown here -->
-                    </div>
-                    <div class="accuracy-score">
-                        <h4>Độ Chính Xác Của Bạn</h4>
-                        <div class="accuracy-meter">
-                            <div class="accuracy-fill" id="accuracy-fill"></div>
-                        </div>
-                        <p id="accuracy-text">0% chính xác</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Interactive Timeline -->
-        <div class="interactive-feature timeline-feature">
-            <div class="feature-header">
-                <h3><i class="fas fa-history"></i> Lịch Sử Phát Triển Kinh Tế Số</h3>
-                <p>Khám phá hành trình phát triển kinh tế số tại Việt Nam</p>
-            </div>
-            <div class="timeline-container">
-                <div class="timeline" id="interactive-timeline">
-                    <!-- Timeline items will be loaded here -->
-                </div>
-                
-                <div class="timeline-details" id="timeline-details">
-                    <div class="detail-card">
-                        <h4>Chọn một mốc thời gian</h4>
-                        <p>Click vào các điểm trên timeline để xem thông tin chi tiết</p>
-                    </div>
+                <div class="game-score">
+                    <p>Điểm số: <span id="verification-score">0</span>/3</p>
                 </div>
             </div>
         </div>

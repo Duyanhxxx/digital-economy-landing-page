@@ -1,58 +1,61 @@
-# Nhóm 8 - Landing Page: Kinh Tế Số và Mối Quan Hệ Hạ Tầng - Thượng Tầng
+# Ý Thức Xã Hội Trong Bối Cảnh Số
 
-## 👥 Thông tin Nhóm
-**Nhóm 8** - Nghiên cứu chuyên sâu về kinh tế số và tác động xã hội
+## Tổng quan dự án
 
-## 📖 Mô tả
-Landing page học thuật về sự bùng nổ của kinh tế số và tác động của nó đến mối quan hệ giữa cơ sở hạ tầng và kiến trúc thượng tầng tại Việt Nam.
+Dự án nghiên cứu về ý thức xã hội trong thời đại số, khám phá câu hỏi: "Ý thức xã hội trong bối cảnh số có còn phản ánh trung thực tồn tại xã hội, hay nó có thể bị 'sản xuất' và 'định hướng' bởi một số nhóm quyền lực?"
 
-## 🚀 Tính năng
-- **Hero Section**: Giới thiệu chủ đề với badge Nhóm 8
-- **AI Chatbot**: Trợ lý thông minh với OpenAI API
-- **Phân tích khái niệm**: Giải thích chi tiết về hạ tầng và thượng tầng
-- **Case Studies**: Ví dụ thực tế từ Grab, Shopee, MoMo
-- **Giải pháp sáng tạo**: Đề xuất ứng dụng thực tiễn
-- **Tính toàn vẹn học thuật**: Tài liệu tham khảo và tuyên bố AI
+## Chủ đề chính
 
-## 🛠️ Công nghệ
-- HTML5 semantic
-- CSS3 với animations
-- Vanilla JavaScript
-- OpenAI GPT-3.5 Turbo API
-- Responsive design
-- Modern typography (Inter font)
+### Hiện tượng mạng xã hội
+- **Xu hướng tích cực**: Tinh thần thiện nguyện, bảo vệ môi trường, khởi nghiệp sáng tạo
+- **Hiện tượng tiêu cực**: Tin giả, tôn vinh lối sống hưởng thụ, chạy theo vật chất
 
-## 👨‍💻 Nhóm phát triển
-**Nhóm 8** - Chuyên nghiên cứu Kinh tế số
+### Phân tích sâu
+- Ý thức xã hội thực sự vs ý thức được "sản xuất"
+- Tác động của thuật toán và các nhóm quyền lực
+- Góc nhìn từ sinh viên và thế hệ trẻ
 
-## 📱 Responsive
-- Desktop: 1200px+
-- Tablet: 768px - 1199px  
-- Mobile: 320px - 767px
+### Giải pháp
+- Giáo dục tư duy phản biện
+- Nâng cao nhận thức về thao túng
+- Xây dựng cộng đồng thực
+- Hành động có ý thức
 
-## 🎨 Design
-- Minimalist và modern với branding Nhóm 8
-- Color scheme: Blue gradient với white/gray
-- Smooth animations và transitions
-- Professional academic layout
+## Tính năng
 
-## 🤖 AI Chatbot
-- Sử dụng OpenAI GPT-3.5 Turbo
-- Chuyên về kinh tế số Việt Nam
-- Fallback mode với knowledge base
-- Quick questions và typing indicators
+- **Giao diện tương tác**: Đánh giá ý thức xã hội cá nhân
+- **Công cụ phân tích**: Phân tích xu hướng mạng xã hội
+- **Trò chơi giáo dục**: Kiểm chứng thông tin và nhận biết fake news
+- **Responsive design**: Tối ưu cho mọi thiết bị
 
-## 📚 Nội dung học thuật
-- Thống kê chính xác về kinh tế số Việt Nam
-- Phân tích mối quan hệ hai chiều hạ tầng - thượng tầng
-- Case studies chi tiết về các platform lớn
-- Đề xuất giải pháp sáng tạo cho tương lai
+## Công nghệ sử dụng
 
-## 🔗 Demo
-Truy cập: [Vercel Deployment URL]
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Build tool**: Vite
+- **Styling**: CSS Grid, Flexbox, CSS Variables
+- **Icons**: Font Awesome
+- **Fonts**: Google Fonts (Inter)
 
-## 📄 License
-MIT License - Sử dụng cho mục đích học thuật và nghiên cứu
+## Cài đặt và chạy
 
----
-**© 2024 Nhóm 8 - Nghiên cứu Kinh tế số. Tất cả quyền được bảo lưu.**
+```bash
+# Clone repository
+git clone [repository-url]
+
+# Di chuyển vào thư mục dự án
+cd social-consciousness-digital-age
+
+# Cài đặt dependencies
+npm install
+
+# Chạy development server
+npm run dev
+
+# Build cho production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## Cấu trúc dự án

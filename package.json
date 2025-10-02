@@ -1,7 +1,7 @@
 {
-  "name": "digital-economy-landing-page",
+  "name": "social-consciousness-digital-age",
   "version": "1.0.0",
-  "description": "Landing page về kinh tế số và mối quan hệ hạ tầng - thượng tầng",
+  "description": "Landing page về ý thức xã hội trong bối cảnh số - Thực tế hay được định hướng?",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,18 +10,19 @@
     "start": "vite preview --port 4173"
   },
   "keywords": [
-    "digital-economy",
-    "infrastructure",
-    "superstructure",
+    "social-consciousness",
+    "digital-age",
+    "social-media",
     "vietnam",
-    "landing-page"
+    "student-research",
+    "critical-thinking"
   ],
-  "author": "Digital Economy Research",
+  "author": "Social Consciousness Research Team",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^5.4.20"
+    "vite": "^5.0.0"
   },
-  "engines": {
-    "node": ">=18.0.0"
+  "dependencies": {
+    "chart.js": "^4.4.0"
   }
 }

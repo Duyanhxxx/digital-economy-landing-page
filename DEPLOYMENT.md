@@ -1,65 +1,75 @@
-# Hướng dẫn Deploy lên Vercel
+# Hướng Dẫn Triển Khai - Ý Thức Xã Hội Trong Bối Cảnh Số
 
-## Bước 1: Chuẩn bị project
+## Tổng quan
+
+Dự án "Ý Thức Xã Hội Trong Bối Cảnh Số" là một trang web nghiên cứu tương tác về ý thức xã hội trong thời đại mạng xã hội và công nghệ số.
+
+## Yêu cầu hệ thống
+
+- Node.js 16+ 
+- npm hoặc yarn
+- Git
+
+## Cài đặt local
+
 ```bash
-# Install dependencies
+# Clone repository
+git clone [repository-url]
+cd social-consciousness-digital-age
+
+# Cài đặt dependencies
 npm install
 
-# Build project để test
+# Chạy development server
+npm run dev
+```
+
+Truy cập `http://localhost:5173` để xem trang web.
+
+## Build cho production
+
+```bash
+# Build static files
 npm run build
 
-# Preview build
+# Preview production build
 npm run preview
 ```
 
-## Bước 2: Setup Environment Variables trên Vercel
+## Triển khai lên Vercel
 
-### Cách 1: Qua Vercel Dashboard
-1. Đăng nhập vào [Vercel Dashboard](https://vercel.com/dashboard)
-2. Import project từ GitHub/GitLab
-3. Vào Settings → Environment Variables
-4. Thêm biến môi trường:
-   - **Name**: `VITE_GEMINI_API_KEY`
-   - **Value**: `your_actual_gemini_api_key`
-   - **Environment**: Production, Preview, Development
+### Tự động (Khuyến nghị)
 
-### Cách 2: Qua Vercel CLI
+1. Kết nối repository với Vercel
+2. Import project từ Git
+3. Vercel sẽ tự động detect Vite và build
+
+### Thủ công
+
 ```bash
-# Install Vercel CLI
+# Cài đặt Vercel CLI
 npm i -g vercel
 
-# Login
-vercel login
-
-# Deploy với environment variables
-vercel --prod -e VITE_GEMINI_API_KEY=your_actual_gemini_api_key
-```
-
-## Bước 3: Deploy
-
-### Deploy qua Git (Recommended)
-1. Push code lên GitHub/GitLab
-2. Connect repository với Vercel
-3. Vercel sẽ tự động deploy khi có commit mới
-
-### Deploy qua CLI
-```bash
-# Deploy to preview
+# Deploy
 vercel
 
-# Deploy to production
+# Deploy production
 vercel --prod
 ```
 
-## Bước 4: Kiểm tra
+## Triển khai lên Netlify
 
-1. Mở URL được cung cấp bởi Vercel
-2. Test chatbox AI để đảm bảo API key hoạt động
-3. Kiểm tra responsive trên mobile
+1. Build project: `npm run build`
+2. Upload thư mục `dist` lên Netlify
+3. Hoặc kết nối Git repository với Netlify
 
-## Lưu ý quan trọng
+## Cấu hình môi trường
 
-- **KHÔNG** commit file `.env` lên Git
-- API key phải được set trong Vercel Environment Variables
-- Project sử dụng Vite nên cần prefix `VITE_` cho environment variables
-- Chatbox sẽ fallback về demo mode nếu API key không hợp lệ
+### Vercel
+File `vercel.json` đã được cấu hình:
+- Rewrites cho SPA routing
+- Headers cho security
+- Static file serving
+
+### Netlify
+Tạo file `_redirects` trong thư mục `public`:
