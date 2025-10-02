@@ -1,8 +1,8 @@
-/* Animation styles */
+/* Animation styles - Ý Thức Xã Hội Số */
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);
-    transition: all 0.6s ease-out;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-on-scroll.animate-in {
@@ -13,21 +13,27 @@
 /* Stagger animation delays */
 .concept-card:nth-child(1) { transition-delay: 0.1s; }
 .concept-card:nth-child(2) { transition-delay: 0.2s; }
+.concept-card:nth-child(3) { transition-delay: 0.3s; }
 
 .impact-card:nth-child(1) { transition-delay: 0.1s; }
 .impact-card:nth-child(2) { transition-delay: 0.2s; }
 .impact-card:nth-child(3) { transition-delay: 0.3s; }
+.impact-card:nth-child(4) { transition-delay: 0.4s; }
 
 .solution-card:nth-child(1) { transition-delay: 0.1s; }
 .solution-card:nth-child(2) { transition-delay: 0.2s; }
 .solution-card:nth-child(3) { transition-delay: 0.3s; }
 .solution-card:nth-child(4) { transition-delay: 0.4s; }
 
+.insight-item:nth-child(1) { transition-delay: 0.1s; }
+.insight-item:nth-child(2) { transition-delay: 0.2s; }
+.insight-item:nth-child(3) { transition-delay: 0.3s; }
+
 /* Network animation */
 .connection-line {
     opacity: 0;
     transform: scaleX(0);
-    transition: all 1s ease-out;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .connection-line.animated {
@@ -35,14 +41,51 @@
     transform: scaleX(1);
 }
 
+/* Digital consciousness animation */
+.digital-consciousness {
+    animation: consciousnessFlow 3s ease-in-out infinite;
+}
+
+@keyframes consciousnessFlow {
+    0%, 100% { 
+        transform: scale(1) rotate(0deg);
+        filter: hue-rotate(0deg);
+    }
+    33% { 
+        transform: scale(1.05) rotate(120deg);
+        filter: hue-rotate(120deg);
+    }
+    66% { 
+        transform: scale(0.95) rotate(240deg);
+        filter: hue-rotate(240deg);
+    }
+}
+
 /* Hover animations */
 .card-hover-effect {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-hover-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.card-hover-effect:hover::before {
+    left: 100%;
 }
 
 .card-hover-effect:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
 }
 
 /* Loading spinner */
@@ -50,8 +93,8 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #667eea;
+    border: 3px solid rgba(59, 130, 246, 0.2);
+    border-top: 3px solid #3b82f6;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -59,6 +102,22 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Social awareness pulse */
+.social-pulse {
+    animation: socialPulse 2s ease-in-out infinite;
+}
+
+@keyframes socialPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
 }
 
 /* Fade transitions */
@@ -70,7 +129,7 @@
 .fade-enter-active {
     opacity: 1;
     transform: translateY(0);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade-exit {
@@ -81,7 +140,7 @@
 .fade-exit-active {
     opacity: 0;
     transform: translateY(-20px);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Pulse animation for important elements */
@@ -90,14 +149,23 @@
 }
 
 @keyframes pulse-animation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% { 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+    100% { 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
 }
 
 /* Bounce animation for buttons */
 .bounce-on-hover {
-    transition: transform 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bounce-on-hover:hover {
@@ -111,21 +179,45 @@
     80% { transform: translateY(-1px); }
 }
 
+/* Shimmer effect for special elements */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
 /* Navbar scroll effect */
 .navbar {
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 2px 20px rgba(59, 130, 246, 0.1);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1);
 }
 
 /* Active navigation link */
 .nav-link.active {
     color: #3b82f6;
     font-weight: 600;
+    position: relative;
 }
 
 .nav-link.active::after {
@@ -135,6 +227,100 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: #3b82f6;
+    background: linear-gradient(90deg, #3b82f6, #1e40af);
     border-radius: 1px;
+    animation: activeLink 2s ease-in-out infinite;
+}
+
+@keyframes activeLink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Floating animation for decorative elements */
+.float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Digital wave effect */
+.digital-wave {
+    animation: digitalWave 4s ease-in-out infinite;
+}
+
+@keyframes digitalWave {
+    0%, 100% { 
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    25% { 
+        transform: translateX(10px) scale(1.02);
+        opacity: 0.8;
+    }
+    50% { 
+        transform: translateX(0) scale(0.98);
+        opacity: 0.9;
+    }
+    75% { 
+        transform: translateX(-10px) scale(1.02);
+        opacity: 0.8;
+    }
+}
+
+/* Consciousness rotation */
+.consciousness-rotate {
+    animation: consciousnessRotate 20s linear infinite;
+}
+
+@keyframes consciousnessRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Social media bubble effect */
+.social-bubble {
+    animation: socialBubble 2s ease-in-out infinite;
+}
+
+@keyframes socialBubble {
+    0%, 100% { 
+        transform: scale(1) translateY(0);
+        opacity: 0.8;
+    }
+    50% { 
+        transform: scale(1.1) translateY(-5px);
+        opacity: 1;
+    }
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+    .animate-on-scroll {
+        transform: translateY(20px);
+    }
+    
+    .card-hover-effect:hover {
+        transform: translateY(-4px) scale(1.01);
+    }
+    
+    .bounce-on-hover:hover {
+        transform: translateY(-1px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+    }
 }
