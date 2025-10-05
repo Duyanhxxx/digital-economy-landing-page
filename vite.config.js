@@ -4,7 +4,12 @@ export default defineConfig({
   root: 'public',
   build: {
     outDir: '../dist',
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      }
+    }
   },
   server: {
     port: 3000,
@@ -13,5 +18,7 @@ export default defineConfig({
   preview: {
     port: 4173,
     open: true
-  }
+  },
+  // Đảm bảo static files được copy
+  publicDir: 'public'
 })

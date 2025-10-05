@@ -49,10 +49,42 @@ class I18n {
         try {
             this.showLoadingState(true);
 
-            const response = await fetch(`/locales/${lang}.json`);
+            // Thử nhiều đường dẫn fallback cho Vercel
+            const paths = [
+                `/locales/${lang}.json`,                    // Absolute path
+                `./locales/${lang}.json`,                   // Relative path
+                `${window.location.origin}/locales/${lang}.json`, // Full URL
+                `/digital-economy-landing-page/locales/${lang}.json` // Subpath fallback
+            ];
 
-            if (!response.ok) {
-                throw new Error(`Failed to load language file: ${lang}`);
+            let response;
+            let lastError;
+
+            for (const path of paths) {
+                try {
+                    console.log(`🔄 Trying to load: ${path}`);
+                    response = await fetch(path, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache'
+                        }
+                    });
+
+                    if (response.ok) {
+                        console.log(`✅ Successfully loaded: ${path}`);
+                        break;
+                    } else {
+                        console.warn(`⚠️ Path failed (${response.status}): ${path}`);
+                    }
+                } catch (error) {
+                    console.warn(`⚠️ Fetch error for ${path}:`, error);
+                    lastError = error;
+                }
+            }
+
+            if (!response || !response.ok) {
+                throw new Error(`Failed to load language file: ${lang}. Last error: ${lastError}`);
             }
 
             const translations = await response.json();
