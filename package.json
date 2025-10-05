@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp -r public/components dist/ && cp -r public/css dist/",
+    "build": "vite build && xcopy public\\components dist\\components /E /I /Y && xcopy public\\css dist\\css /E /I /Y && xcopy public\\locales dist\\locales /E /I /Y",
     "preview": "vite preview",
     "start": "vite preview --port 4173"
   },
