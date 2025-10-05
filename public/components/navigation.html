@@ -2,14 +2,41 @@
     <div class="nav-container">
         <div class="nav-logo">
             <i class="fas fa-share-alt"></i>
-            <span>Ý Thức Xã Hội Số</span>
+            <span data-i18n="nav.logo">Ý Thức Xã Hội Số</span>
         </div>
         <div class="nav-menu">
-            <a href="#hero" class="nav-link">Trang chủ</a>
-            <a href="#concept" class="nav-link">Hiện tượng</a>
-            <a href="#analysis" class="nav-link">Phân tích</a>
-            <a href="#solutions" class="nav-link">Giải pháp</a>
-            <a href="#conclusion" class="nav-link">Kết luận</a>
+            <a href="#hero" class="nav-link" data-i18n="nav.home">Trang chủ</a>
+            <a href="#concept" class="nav-link" data-i18n="nav.concept">Hiện tượng</a>
+            <a href="#analysis" class="nav-link" data-i18n="nav.analysis">Phân tích</a>
+            <a href="#solutions" class="nav-link" data-i18n="nav.solutions">Giải pháp</a>
+            <a href="#conclusion" class="nav-link" data-i18n="nav.conclusion">Kết luận</a>
+        </div>
+        <div class="nav-language">
+            <div class="lang-dropdown">
+                <button class="lang-button" id="current-lang">
+                    <span id="current-lang-flag">🇻🇳</span>
+                    <span id="current-lang-text">VI</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-options" id="lang-options">
+                    <div class="lang-option" data-lang="vi">
+                        <span class="lang-flag">🇻🇳</span>
+                        <span class="lang-text">Tiếng Việt</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-text">English</span>
+                    </div>
+                    <div class="lang-option" data-lang="ja">
+                        <span class="lang-flag">🇯🇵</span>
+                        <span class="lang-text">日本語</span>
+                    </div>
+                    <div class="lang-option" data-lang="zh">
+                        <span class="lang-flag">🇨🇳</span>
+                        <span class="lang-text">中文</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

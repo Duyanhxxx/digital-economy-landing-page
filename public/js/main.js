@@ -3,7 +3,7 @@ import NavigationHandler from './navigation.js';
 import ChatboxHandler from './chatbox.js';
 import AnimationHandler from './animations.js';
 import InteractiveHandler from './interactive.js';
-import TranslationHandler from './translation.js';
+import './i18n.js'; // Initialize i18n system
 
 // Initialize the application
 class App {
@@ -85,10 +85,6 @@ class App {
             // Initialize interactive features
             this.interactiveHandler = new InteractiveHandler();
             console.log('Interactive handler initialized');
-            
-            // Initialize translation
-            this.translationHandler = new TranslationHandler();
-            console.log('Translation handler initialized');
             
             // Initialize other features
             this.initializeScrollEffects();
