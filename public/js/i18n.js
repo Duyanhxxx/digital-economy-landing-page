@@ -1,220 +1,267 @@
 /**
- * i18n (Internationalization) Module
- * Client-side language switching without page reload
+ * 🌍 i18n System - Multi-language Support
+ * Hỗ trợ: Tiếng Việt, English, 日本語, 中文
+ * Client-side only, no backend required
  */
+
 class I18n {
     constructor() {
-        this.currentLang = localStorage.getItem('selectedLanguage') || 'vi';
+        this.currentLang = 'vi'; // Mặc định Tiếng Việt
         this.translations = {};
-        this.isLoading = false;
-        this.init();
-    }
-
-    async init() {
-        await this.loadLanguage(this.currentLang);
-        this.createLanguageSelector();
-        this.applyTranslations();
+        this.fallbackLang = 'vi';
+        this.supportedLanguages = {
+            vi: { name: 'Tiếng Việt', flag: '🇻🇳' },
+            en: { name: 'English', flag: '🇺🇸' },
+            ja: { name: '日本語', flag: '🇯🇵' },
+            zh: { name: '中文', flag: '🇨🇳' }
+        };
     }
 
     /**
-     * Load language file from /locales/ directory
+     * Khởi tạo hệ thống i18n
+     * - Lấy ngôn ngữ từ localStorage (nếu có)
+     * - Load file JSON tương ứng
+     * - Áp dụng dịch vào trang
      */
-    async loadLanguage(lang) {
-        if (this.isLoading) return;
-
-        this.isLoading = true;
-        this.showLoadingSpinner();
-
+    async init() {
         try {
-            const response = await fetch(`./locales/${lang}.json`);
-            if (!response.ok) {
-                throw new Error(`Failed to load language file: ${response.status}`);
-            }
-            this.translations = await response.json();
-            this.currentLang = lang;
-            localStorage.setItem('selectedLanguage', lang);
+            // Lấy ngôn ngữ đã lưu hoặc dùng mặc định
+            const savedLang = localStorage.getItem('preferred-language') || this.fallbackLang;
+            await this.setLanguage(savedLang);
+
+            // Lắng nghe sự kiện thay đổi ngôn ngữ
+            this.setupLanguageSelector();
+
+            console.log(`✅ i18n initialized with language: ${this.currentLang}`);
         } catch (error) {
-            console.error('Error loading language:', error);
-            // Fallback to Vietnamese if loading fails
-            if (lang !== 'vi') {
-                await this.loadLanguage('vi');
-            }
-        } finally {
-            this.isLoading = false;
-            this.hideLoadingSpinner();
+            console.error('❌ Error initializing i18n:', error);
+            // Fallback về tiếng Việt nếu có lỗi
+            await this.setLanguage(this.fallbackLang);
         }
     }
 
     /**
-     * Apply translations to all elements with data-i18n attribute
+     * Tải file JSON ngôn ngữ từ /locales/
+     * @param {string} lang - Mã ngôn ngữ (vi, en, ja, zh)
+     * @returns {Promise<Object>} - Object chứa translations
      */
-    applyTranslations() {
+    async loadLanguage(lang) {
+        try {
+            this.showLoadingState(true);
+
+            const response = await fetch(`/locales/${lang}.json`);
+
+            if (!response.ok) {
+                throw new Error(`Failed to load language file: ${lang}`);
+            }
+
+            const translations = await response.json();
+            this.translations = translations;
+
+            return translations;
+        } catch (error) {
+            console.error(`❌ Error loading language ${lang}:`, error);
+
+            // Nếu không load được, thử load tiếng Việt
+            if (lang !== this.fallbackLang) {
+                console.log(`⚠️ Fallback to ${this.fallbackLang}`);
+                return await this.loadLanguage(this.fallbackLang);
+            }
+
+            throw error;
+        } finally {
+            this.showLoadingState(false);
+        }
+    }
+
+    /**
+     * Áp dụng bản dịch vào tất cả elements có data-i18n
+     * @param {Object} translations - Object chứa key-value translations
+     */
+    applyTranslations(translations) {
+        // Dịch text có data-i18n
         const elements = document.querySelectorAll('[data-i18n]');
+
         elements.forEach(element => {
             const key = element.getAttribute('data-i18n');
-            const translation = this.getTranslation(key);
+            const translation = this.getNestedTranslation(key, translations);
 
             if (translation) {
-                // Add fade effect
+                // Thêm animation fade khi chuyển ngôn ngữ
                 element.style.opacity = '0';
+
                 setTimeout(() => {
                     element.textContent = translation;
                     element.style.opacity = '1';
-                }, 100);
-
-                // Update document title if it's a title element
-                if (element.tagName === 'TITLE') {
-                    document.title = translation;
-                }
+                }, 150);
+            } else {
+                console.warn(`⚠️ Translation not found for key: ${key}`);
             }
         });
+
+        // Dịch placeholder
+        const inputElements = document.querySelectorAll('[data-i18n-placeholder]');
+        inputElements.forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            const translation = this.getNestedTranslation(key, translations);
+
+            if (translation) {
+                element.setAttribute('placeholder', translation);
+            }
+        });
+
+        // Dịch title/tooltip
+        const titleElements = document.querySelectorAll('[data-i18n-title]');
+        titleElements.forEach(element => {
+            const key = element.getAttribute('data-i18n-title');
+            const translation = this.getNestedTranslation(key, translations);
+
+            if (translation) {
+                element.setAttribute('title', translation);
+            }
+        });
+
+        // Cập nhật thuộc tính lang của HTML
+        document.documentElement.setAttribute('lang', this.currentLang);
     }
 
     /**
-     * Get translation for a key
+     * Lấy translation từ nested object (hỗ trợ key như "nav.home")
+     * @param {string} key - Key có thể có dạng "section.subsection.key"
+     * @param {Object} translations - Object chứa translations
+     * @returns {string|null} - Giá trị translation hoặc null
      */
-    getTranslation(key) {
+    getNestedTranslation(key, translations) {
         const keys = key.split('.');
-        let value = this.translations;
+        let value = translations;
 
         for (const k of keys) {
-            value = value && value[k];
+            if (value && typeof value === 'object' && k in value) {
+                value = value[k];
+            } else {
+                return null;
+            }
         }
 
-        return value || key;
+        return typeof value === 'string' ? value : null;
     }
 
     /**
-     * Set language and apply changes
+     * Đặt ngôn ngữ mới
+     * @param {string} lang - Mã ngôn ngữ (vi, en, ja, zh)
      */
     async setLanguage(lang) {
-        if (lang === this.currentLang) return;
-
-        await this.loadLanguage(lang);
-        this.applyTranslations();
-        this.updateLanguageSelector();
-    }
-
-    /**
-     * Create language selector dropdown
-     */
-    createLanguageSelector() {
-        // Check if dropdown already exists in navigation
-        const existingDropdown = document.querySelector('.nav-language .lang-dropdown');
-        if (existingDropdown) {
-            this.bindEvents();
-            this.updateLanguageSelector();
-            return;
+        // Kiểm tra ngôn ngữ có được hỗ trợ không
+        if (!this.supportedLanguages[lang]) {
+            console.warn(`⚠️ Language ${lang} not supported, using ${this.fallbackLang}`);
+            lang = this.fallbackLang;
         }
 
-        // Fallback: create dropdown if not found in navigation
-        const selector = document.createElement('div');
-        selector.id = 'language-selector';
-        selector.innerHTML = `
-            <div class="lang-dropdown">
-                <button class="lang-button" id="current-lang">
-                    <span id="current-lang-flag">🇻🇳</span>
-                    <span id="current-lang-text">VI</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-options" id="lang-options">
-                    <div class="lang-option" data-lang="vi">
-                        <span class="lang-flag">🇻🇳</span>
-                        <span class="lang-text">Tiếng Việt</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span class="lang-flag">🇺🇸</span>
-                        <span class="lang-text">English</span>
-                    </div>
-                    <div class="lang-option" data-lang="ja">
-                        <span class="lang-flag">🇯🇵</span>
-                        <span class="lang-text">日本語</span>
-                    </div>
-                    <div class="lang-option" data-lang="zh">
-                        <span class="lang-flag">🇨🇳</span>
-                        <span class="lang-text">中文</span>
-                    </div>
-                </div>
-            </div>
-        `;
+        try {
+            // Load file JSON
+            const translations = await this.loadLanguage(lang);
 
-        document.body.appendChild(selector);
-        this.bindEvents();
-        this.updateLanguageSelector();
+            // Áp dụng translations
+            this.applyTranslations(translations);
+
+            // Lưu vào localStorage
+            this.currentLang = lang;
+            localStorage.setItem('preferred-language', lang);
+
+            // Cập nhật UI của selector
+            this.updateLanguageSelectorUI();
+
+            console.log(`✅ Language changed to: ${lang}`);
+        } catch (error) {
+            console.error(`❌ Error setting language to ${lang}:`, error);
+        }
     }
 
     /**
-     * Bind events for language selector
+     * Thiết lập event listeners cho language selector
      */
-    bindEvents() {
-        const button = document.getElementById('current-lang');
-        const options = document.getElementById('lang-options');
+    setupLanguageSelector() {
+        // Đợi DOM load xong
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.attachLanguageSelectorEvents();
+            });
+        } else {
+            this.attachLanguageSelectorEvents();
+        }
+    }
 
-        // Toggle dropdown
-        button.addEventListener('click', () => {
-            options.classList.toggle('show');
+    /**
+     * Gắn events vào language selector
+     */
+    attachLanguageSelectorEvents() {
+        const selector = document.getElementById('language-selector');
+
+        if (selector) {
+            selector.addEventListener('change', (e) => {
+                const newLang = e.target.value;
+                this.setLanguage(newLang);
+            });
+        }
+
+        // Hỗ trợ custom dropdown nếu có
+        const customButtons = document.querySelectorAll('[data-lang-switch]');
+        customButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const newLang = e.currentTarget.getAttribute('data-lang-switch');
+                this.setLanguage(newLang);
+            });
         });
+    }
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!button.contains(e.target) && !options.contains(e.target)) {
-                options.classList.remove('show');
+    /**
+     * Cập nhật UI của language selector
+     */
+    updateLanguageSelectorUI() {
+        const selector = document.getElementById('language-selector');
+        if (selector) {
+            selector.value = this.currentLang;
+        }
+
+        // Cập nhật active state cho custom UI nếu có
+        document.querySelectorAll('[data-lang-switch]').forEach(button => {
+            const lang = button.getAttribute('data-lang-switch');
+            if (lang === this.currentLang) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
             }
         });
-
-        // Language selection
-        options.addEventListener('click', (e) => {
-            const option = e.target.closest('.lang-option');
-            if (option) {
-                const lang = option.getAttribute('data-lang');
-                this.setLanguage(lang);
-                options.classList.remove('show');
-            }
-        });
     }
 
     /**
-     * Update language selector display
+     * Hiển thị/ẩn loading state
+     * @param {boolean} show - true để hiện, false để ẩn
      */
-    updateLanguageSelector() {
-        const languages = {
-            vi: { flag: '🇻🇳', text: 'VI' },
-            en: { flag: '🇺🇸', text: 'EN' },
-            ja: { flag: '🇯🇵', text: 'JA' },
-            zh: { flag: '🇨🇳', text: 'ZH' }
-        };
-
-        const current = languages[this.currentLang];
-        if (current) {
-            const flagElement = document.getElementById('current-lang-flag');
-            const textElement = document.getElementById('current-lang-text');
-            if (flagElement) flagElement.textContent = current.flag;
-            if (textElement) textElement.textContent = current.text;
-        }
-    }
-
-    /**
-     * Show loading spinner
-     */
-    showLoadingSpinner() {
-        const spinner = document.getElementById('loading-spinner');
+    showLoadingState(show) {
+        const spinner = document.getElementById('language-loading');
         if (spinner) {
-            spinner.style.display = 'block';
+            spinner.style.display = show ? 'inline-block' : 'none';
+        }
+
+        // Disable selector trong lúc loading
+        const selector = document.getElementById('language-selector');
+        if (selector) {
+            selector.disabled = show;
         }
     }
 
     /**
-     * Hide loading spinner
+     * Get translation cho một key cụ thể (dùng trong JS)
+     * @param {string} key - Key cần dịch
+     * @returns {string} - Translation hoặc key nếu không tìm thấy
      */
-    hideLoadingSpinner() {
-        const spinner = document.getElementById('loading-spinner');
-        if (spinner) {
-            spinner.style.display = 'none';
-        }
+    t(key) {
+        const translation = this.getNestedTranslation(key, this.translations);
+        return translation || key;
     }
 }
 
-// Initialize i18n when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.i18n = new I18n();
-});
+// Export singleton instance
+const i18n = new I18n();
+export default i18n;

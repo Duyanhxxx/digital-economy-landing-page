@@ -3,7 +3,7 @@ import NavigationHandler from './navigation.js';
 import ChatboxHandler from './chatbox.js';
 import AnimationHandler from './animations.js';
 import InteractiveHandler from './interactive.js';
-import './i18n.js'; // Initialize i18n system
+import i18n from './i18n.js';
 
 // Initialize the application
 class App {
@@ -15,19 +15,32 @@ class App {
     async init() {
         try {
             console.log('Starting component loading...');
-            
+
             // Load all components first
             await this.componentLoader.loadAllComponents();
             console.log('Components loaded successfully');
-            
+
             // Wait a bit more for DOM to be fully ready
             await this.waitForDOM();
-            
+
+            // Initialize i18n system
+            await this.initializeI18n();
+
             // Initialize handlers after components are loaded
             this.initializeHandlers();
-            
+
         } catch (error) {
             console.error('Error during initialization:', error);
+        }
+    }
+
+    async initializeI18n() {
+        try {
+            console.log('Initializing i18n system...');
+            await i18n.init();
+            console.log('i18n system initialized successfully');
+        } catch (error) {
+            console.error('Error initializing i18n:', error);
         }
     }
 
@@ -37,7 +50,7 @@ class App {
             const checkChatbox = () => {
                 const chatbox = document.getElementById('ai-chatbox');
                 const toggle = document.getElementById('chatbox-toggle');
-                
+
                 if (chatbox && toggle) {
                     console.log('Chatbox DOM elements found');
                     resolve();
@@ -46,7 +59,7 @@ class App {
                     setTimeout(checkChatbox, 50);
                 }
             };
-            
+
             // Start checking after a short delay
             setTimeout(checkChatbox, 100);
         });
@@ -55,16 +68,16 @@ class App {
     initializeHandlers() {
         try {
             console.log('Initializing handlers...');
-            
+
             // Initialize navigation
             this.navigationHandler = new NavigationHandler();
             console.log('Navigation handler initialized');
-            
+
             // Initialize chatbox with extra checks
             try {
                 const chatboxElement = document.getElementById('ai-chatbox');
                 const toggleElement = document.getElementById('chatbox-toggle');
-                
+
                 if (chatboxElement && toggleElement) {
                     this.chatboxHandler = new ChatboxHandler();
                     console.log('Chatbox handler initialized successfully');
@@ -77,21 +90,21 @@ class App {
             } catch (chatboxError) {
                 console.error('Error initializing chatbox:', chatboxError);
             }
-            
+
             // Initialize animations
             this.animationHandler = new AnimationHandler();
             console.log('Animation handler initialized');
-            
+
             // Initialize interactive features
             this.interactiveHandler = new InteractiveHandler();
             console.log('Interactive handler initialized');
-            
+
             // Initialize other features
             this.initializeScrollEffects();
             this.initializeDownloadButton();
-            
+
             console.log('All handlers initialized successfully');
-            
+
         } catch (error) {
             console.error('Error during handler initialization:', error);
         }
@@ -127,10 +140,10 @@ class App {
 
     initializeDownloadButton() {
         // Download report functionality - make it global for backward compatibility
-        window.downloadReport = function() {
+        window.downloadReport = function () {
             alert('Tính năng tải báo cáo sẽ được cập nhật sớm!');
         };
-        
+
         // Add event listener for the new download button
         const downloadBtn = document.getElementById('download-report-btn');
         if (downloadBtn) {
@@ -139,7 +152,7 @@ class App {
                 window.downloadReport();
             });
         }
-        
+
         // Also handle any remaining onclick buttons
         const downloadBtns = document.querySelectorAll('[onclick*="downloadReport"]');
         downloadBtns.forEach(btn => {

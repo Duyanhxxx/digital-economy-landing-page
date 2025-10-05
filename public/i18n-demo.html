@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 i18n Demo - Hệ Thống Đa Ngôn Ngữ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .demo-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* Language Selector */
+        .language-selector-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-selector {
+            appearance: none;
+            background: #ffffff;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 0.6rem 2.5rem 0.6rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            outline: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231f2937' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 12px;
+        }
+
+        .language-selector:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .language-loading {
+            display: none;
+            color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Content */
+        .demo-content {
+            padding: 2rem;
+        }
+
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+
+        .demo-section h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .demo-section p {
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .demo-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea30;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .demo-card h3 {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-card p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .demo-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        /* Fade transition */
+        [data-i18n] {
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .demo-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .demo-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .language-selector-wrapper {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Selector -->
+    <div class="language-selector-wrapper">
+        <div class="language-loading" id="language-loading">
+            🔄
+        </div>
+        <select id="language-selector" class="language-selector" aria-label="Choose language">
+            <option value="vi">🇻🇳 Tiếng Việt</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="zh">🇨🇳 中文</option>
+        </select>
+    </div>
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 data-i18n="hero.title">
+                🌍 Hệ Thống i18n Demo
+            </h1>
+            <p data-i18n="hero.subtitle">
+                Chuyển đổi ngôn ngữ mượt mà không reload trang
+            </p>
+        </div>
+
+        <div class="demo-content">
+            <!-- Section 1 -->
+            <div class="demo-section">
+                <h2 data-i18n="concept.title">✨ Hiện Tượng Mạng Xã Hội</h2>
+                <p data-i18n="concept.positiveDesc">
+                    Những trào lưu lan tỏa giá trị tích cực trong xã hội
+                </p>
+
+                <div class="demo-cards">
+                    <div class="demo-card">
+                        <h3 data-i18n="concept.positive1">🙏 Tinh thần thiện nguyện</h3>
+                        <p data-i18n="nav.home">Trang chủ</p>
+                    </div>
+                    <div class="demo-card">
+                        <h3 data-i18n="concept.positive2">🌱 Bảo vệ môi trường</h3>
+                        <p data-i18n="nav.concept">Hiện tượng</p>
+                    </div>
+                    <div class="demo-card">
+                        <h3 data-i18n="concept.positive3">💡 Khởi nghiệp sáng tạo</h3>
+                        <p data-i18n="nav.analysis">Phân tích</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2 - Stats -->
+            <div class="demo-section">
+                <h2 data-i18n="nav.solutions">📊 Giải pháp</h2>
+                <div class="demo-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="hero.stat1Number">4.2B</div>
+                        <div class="stat-label" data-i18n="hero.stat1Label">Người dùng mạng xã hội</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="hero.stat2Number">73%</div>
+                        <div class="stat-label" data-i18n="hero.stat2Label">Tin tức từ mạng xã hội</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="hero.stat3Number">85%</div>
+                        <div class="stat-label" data-i18n="hero.stat3Label">Sinh viên bị ảnh hưởng xu hướng</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="demo-section">
+                <h2 data-i18n="nav.conclusion">✅ Kết luận</h2>
+                <p data-i18n="hero.description">
+                    Khám phá mối quan hệ phức tạp giữa mạng xã hội, xu hướng số và ý thức xã hội thực sự 
+                    trong thời đại thông tin bùng nổ
+                </p>
+                <div class="success-badge">
+                    ✨ <span data-i18n="chatbox.badge">i18n hoạt động hoàn hảo!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import i18n from './js/i18n.js';
+
+        // Initialize i18n when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🌍 Initializing i18n demo...');
+            await i18n.init();
+            console.log('✅ i18n demo ready!');
+        });
+    </script>
+</body>
+</html>

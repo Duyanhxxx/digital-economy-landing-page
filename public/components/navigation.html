@@ -11,32 +11,18 @@
             <a href="#solutions" class="nav-link" data-i18n="nav.solutions">Giải pháp</a>
             <a href="#conclusion" class="nav-link" data-i18n="nav.conclusion">Kết luận</a>
         </div>
-        <div class="nav-language">
-            <div class="lang-dropdown">
-                <button class="lang-button" id="current-lang">
-                    <span id="current-lang-flag">🇻🇳</span>
-                    <span id="current-lang-text">VI</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-options" id="lang-options">
-                    <div class="lang-option" data-lang="vi">
-                        <span class="lang-flag">🇻🇳</span>
-                        <span class="lang-text">Tiếng Việt</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span class="lang-flag">🇺🇸</span>
-                        <span class="lang-text">English</span>
-                    </div>
-                    <div class="lang-option" data-lang="ja">
-                        <span class="lang-flag">🇯🇵</span>
-                        <span class="lang-text">日本語</span>
-                    </div>
-                    <div class="lang-option" data-lang="zh">
-                        <span class="lang-flag">🇨🇳</span>
-                        <span class="lang-text">中文</span>
-                    </div>
-                </div>
+        
+        <!-- Language Selector -->
+        <div class="language-selector-wrapper">
+            <div class="language-loading" id="language-loading">
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
+            <select id="language-selector" class="language-selector" aria-label="Choose language">
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="zh">🇨🇳 中文</option>
+            </select>
         </div>
     </div>
 </nav>
