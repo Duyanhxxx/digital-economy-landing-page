@@ -2,6 +2,7 @@
 class ChatboxHandler {
     constructor() {
         this.apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        this.model = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.0-flash';
         this.isOpen = false;
         this.isTyping = false;
         
@@ -141,38 +142,22 @@ class ChatboxHandler {
         const message = this.input?.value.trim();
         if (!message || this.isTyping) return;
 
-        // Add user message
         this.addMessage(message, 'user');
         this.input.value = '';
-
-        // Check if topic is relevant
-        if (!this.isRelevantTopic(message)) {
-            this.addMessage(this.getOffTopicResponse(), 'ai');
-            return;
-        }
-
-        // Show typing indicator
         this.showTyping();
 
         try {
             let response;
             if (this.apiKey) {
-                // Try Gemini API first
                 response = await this.callGeminiAPI(message);
             } else {
-                // Fallback to demo responses
                 response = this.getDemoResponse(message);
             }
-            
-            // Hide typing and show response
             this.hideTyping();
             this.addMessage(response, 'ai');
-            
         } catch (error) {
             console.error('Error getting AI response:', error);
             this.hideTyping();
-            
-            // Fallback to demo response on API error
             const fallbackResponse = this.getDemoResponse(message);
             this.addMessage(fallbackResponse, 'ai');
         }
@@ -216,23 +201,18 @@ Bạn có câu hỏi nào khác về những chủ đề này không?`
     }
 
     async callGeminiAPI(message) {
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${this.apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent?key=${this.apiKey}`;
         
-        const prompt = `Bạn là một AI trợ lý chuyên về ý thức xã hội trong thời đại số, triết học và chính trị học. 
+        const prompt = `Bạn là một chuyên gia triết học, có kiến thức sâu về ý thức xã hội và chính trị trong thời đại số.
 
-QUAN TRỌNG: Chỉ trả lời các câu hỏi liên quan đến:
-- Ý thức xã hội và tác động của công nghệ số
-- Triết học (đặc biệt là triết học xã hội, nhận thức luận)
-- Chính trị học (quyền lực, dư luận, thao túng thông tin)
-- Xã hội học (xu hướng, cộng đồng, văn hóa số)
-- Tư duy phản biện và phân tích thông tin
-- Giáo dục và nghiên cứu học thuật
+Nhiệm vụ: Trả lời mọi câu hỏi bằng tiếng Việt, theo góc nhìn triết học-xã hội, rõ ràng và ngắn gọn (tối đa 250 từ). 
+- Nêu luận điểm chính và lý thuyết liên quan (ví dụ: Marx, Foucault, Habermas, Kant...).
+- Liên hệ bối cảnh công nghệ số và tác động xã hội.
+- Đề xuất cách tư duy/phản biện hoặc hành động có trách nhiệm.
 
-Nếu câu hỏi không liên quan đến những chủ đề trên, hãy từ chối một cách lịch sự và hướng dẫn người dùng hỏi về đúng chủ đề.
+Nếu câu hỏi không trực tiếp thuộc phạm vi, hãy tái diễn dịch nó từ góc nhìn triết học và cung cấp phân tích liên quan, không từ chối.
 
-Câu hỏi: ${message}
-
-Hãy trả lời bằng tiếng Việt, mang tính học thuật nhưng dễ hiểu (tối đa 250 từ).`;
+Câu hỏi: ${message}`;
 
         const requestBody = {
             contents: [{
@@ -294,7 +274,7 @@ Hãy trả lời bằng tiếng Việt, mang tính học thuật nhưng dễ hi�
 
 📊 **Cơ chế hoạt động**:
 - **Panopticon số**: Giám sát hành vi không người dùng nhận ra
-- **Hegemony văn hóa** (Gramsci): Tạo đồng thuận qua nội dung được lựa chọn
+- **Hegemony văn hóa** (Gramsci): Tạo đồng thuận qua nội dung đường để lựa chọn
 - **Bong bóng thông tin**: Chia rẽ xã hội thành các nhóm tách biệt
 
 🤔 **Triết học**: Thuật toán đặt ra câu hỏi về tự do ý chí - liệu chúng ta có thực sự tự do lựa chọn khi suy nghĩng?
