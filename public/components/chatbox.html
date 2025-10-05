@@ -3,7 +3,7 @@
     <div class="chatbox-header">
         <div class="chatbox-title">
             <i class="fas fa-brain"></i>
-            <span>AI Trợ Lý Ý Thức Xã Hội</span>
+            <span data-i18n="chatbox.title">AI Trợ Lý Ý Thức Xã Hội</span>
         </div>
         <button id="chatbox-close" class="chatbox-close">
             <i class="fas fa-times"></i>
@@ -12,20 +12,20 @@
     <div class="chatbox-messages" id="chatbox-messages">
         <div class="message ai-message">
             <div class="message-content">
-                Xin chào! Tôi là AI trợ lý chuyên về ý thức xã hội trong thời đại số. Bạn có thể hỏi tôi về:
+                <span data-i18n="chatbox.welcome">Xin chào! Tôi là AI trợ lý chuyên về ý thức xã hội trong thời đại số. Bạn có thể hỏi tôi về:</span>
                 <ul>
-                    <li>Cách nhận biết thông tin thật/giả</li>
-                    <li>Phân tích xu hướng mạng xã hội</li>
-                    <li>Tác động của thuật toán</li>
-                    <li>Phát triển tư duy phản biện</li>
-                    <li>Ý thức xã hội chân thực</li>
+                    <li data-i18n="chatbox.topic1">Cách nhận biết thông tin thật/giả</li>
+                    <li data-i18n="chatbox.topic2">Phân tích xu hướng mạng xã hội</li>
+                    <li data-i18n="chatbox.topic3">Tác động của thuật toán</li>
+                    <li data-i18n="chatbox.topic4">Phát triển tư duy phản biện</li>
+                    <li data-i18n="chatbox.topic5">Ý thức xã hội chân thực</li>
                 </ul>
-                Hãy chia sẻ thắc mắc của bạn!
+                <span data-i18n="chatbox.cta">Hãy chia sẻ thắc mắc của bạn!</span>
             </div>
         </div>
     </div>
     <div class="chatbox-input">
-        <input type="text" id="chatbox-input-field" placeholder="Hỏi về ý thức xã hội số..." maxlength="500">
+        <input type="text" id="chatbox-input-field" data-i18n-placeholder="chatbox.placeholder" placeholder="Hỏi về ý thức xã hội số..." maxlength="500">
         <button id="chatbox-send" class="chatbox-send-btn">
             <i class="fas fa-paper-plane"></i>
         </button>
@@ -35,5 +35,5 @@
 <!-- Chatbox Toggle Button -->
 <button id="chatbox-toggle" class="chatbox-toggle">
     <i class="fas fa-comments"></i>
-    <span class="chatbox-badge">AI</span>
+    <span class="chatbox-badge" data-i18n="chatbox.badge">AI</span>
 </button>

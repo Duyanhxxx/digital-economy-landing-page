@@ -2,14 +2,27 @@
     <div class="nav-container">
         <div class="nav-logo">
             <i class="fas fa-share-alt"></i>
-            <span>Ý Thức Xã Hội Số</span>
+            <span data-i18n="nav.logo">Ý Thức Xã Hội Số</span>
         </div>
         <div class="nav-menu">
-            <a href="#hero" class="nav-link">Trang chủ</a>
-            <a href="#concept" class="nav-link">Hiện tượng</a>
-            <a href="#analysis" class="nav-link">Phân tích</a>
-            <a href="#solutions" class="nav-link">Giải pháp</a>
-            <a href="#conclusion" class="nav-link">Kết luận</a>
+            <a href="#hero" class="nav-link" data-i18n="nav.home">Trang chủ</a>
+            <a href="#concept" class="nav-link" data-i18n="nav.concept">Hiện tượng</a>
+            <a href="#analysis" class="nav-link" data-i18n="nav.analysis">Phân tích</a>
+            <a href="#solutions" class="nav-link" data-i18n="nav.solutions">Giải pháp</a>
+            <a href="#conclusion" class="nav-link" data-i18n="nav.conclusion">Kết luận</a>
+        </div>
+        
+        <!-- Language Selector -->
+        <div class="language-selector-wrapper">
+            <div class="language-loading" id="language-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <select id="language-selector" class="language-selector" aria-label="Choose language">
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="zh">🇨🇳 中文</option>
+            </select>
         </div>
     </div>
 </nav>
