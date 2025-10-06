@@ -239,7 +239,8 @@
       "credibilityLabel": "可信度",
       "diversityLabel": "内容多样性",
       "hint": "拖动滑块调整算法对内容排名的处理方式。",
-      "balanceText": "算法平衡分数: 0/100"
+      "balanceLabel": "算法平衡分数:",
+      "balanceHint": "平衡分数衡量算法的公平性。当3个因素平衡时（33-33-33）为100分，失衡时会降低。"
     }
   }
 }

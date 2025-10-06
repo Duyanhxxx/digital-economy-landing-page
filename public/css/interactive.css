@@ -705,10 +705,29 @@
 .algo-sandbox .weight-controls label {
   color: #374151 !important;
   font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.algo-sandbox .weight-controls .weight-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  padding: 0.25rem 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
 .algo-sandbox input[type="range"] {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 8px;
   border-radius: 999px;
@@ -723,11 +742,80 @@
 }
 
 .algo-sandbox .balance-meter {
-  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-  border: 2px solid #3b82f6;
   border-radius: 12px;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: 2px solid;
+}
+
+.balance-meter .balance-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.balance-meter .balance-rating {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid currentColor;
+}
+
+.balance-meter .balance-hint {
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin: 0.5rem 0 0 0;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+.balance-meter .balance-hint i {
+  margin-right: 0.35rem;
+}
+
+/* Balance levels with colors */
+.balance-meter.balance-excellent {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-color: #10b981;
+  color: #065f46 !important;
+}
+
+.balance-meter.balance-good {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-color: #3b82f6;
+  color: #1e40af !important;
+}
+
+.balance-meter.balance-fair {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #f59e0b;
+  color: #92400e !important;
+}
+
+.balance-meter.balance-poor {
+  background: linear-gradient(135deg, #fed7aa, #fdba74);
+  border-color: #f97316;
+  color: #7c2d12 !important;
+}
+
+.balance-meter.balance-bad {
+  background: linear-gradient(135deg, #fecaca, #fca5a5);
+  border-color: #ef4444;
+  color: #991b1b !important;
+}
+
+.balance-meter #algo-balance {
+  font-size: 1.5rem;
+  font-weight: 800;
 }
 
 .feed-preview {

@@ -239,7 +239,8 @@
       "credibilityLabel": "Độ tin cậy",
       "diversityLabel": "Đa dạng nội dung",
       "hint": "Kéo các thanh trượt để điều chỉnh cách thuật toán xếp hạng nội dung.",
-      "balanceText": "Điểm cân bằng thuật toán: 0/100"
+      "balanceLabel": "Điểm cân bằng thuật toán:",
+      "balanceHint": "Điểm cân bằng đo lường mức độ công bằng của thuật toán. 100 điểm khi 3 yếu tố cân bằng (33-33-33), giảm khi mất cân bằng."
     }
   }
 }

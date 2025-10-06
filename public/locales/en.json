@@ -239,7 +239,8 @@
       "credibilityLabel": "Credibility",
       "diversityLabel": "Content Diversity",
       "hint": "Drag the sliders to adjust how the algorithm ranks content.",
-      "balanceText": "Algorithm balance score: 0/100"
+      "balanceLabel": "Algorithm balance score:",
+      "balanceHint": "Balance score measures algorithm fairness. 100 points when all 3 factors are balanced (33-33-33), decreases with imbalance."
     }
   }
 }

@@ -246,23 +246,40 @@
           <div class="sandbox-container">
             <div class="weight-controls">
               <div class="control">
-                <label for="weight-virality" data-i18n="interactive.sandbox.viralityLabel">Độ gây sốt</label>
+                <label for="weight-virality">
+                  <span data-i18n="interactive.sandbox.viralityLabel">Độ gây sốt</span>
+                  <span class="weight-value" id="weight-virality-value">50</span>
+                </label>
                 <input type="range" id="weight-virality" min="0" max="100" value="50">
               </div>
               <div class="control">
-                <label for="weight-credibility" data-i18n="interactive.sandbox.credibilityLabel">Độ tin cậy</label>
+                <label for="weight-credibility">
+                  <span data-i18n="interactive.sandbox.credibilityLabel">Độ tin cậy</span>
+                  <span class="weight-value" id="weight-credibility-value">50</span>
+                </label>
                 <input type="range" id="weight-credibility" min="0" max="100" value="50">
               </div>
               <div class="control">
-                <label for="weight-diversity" data-i18n="interactive.sandbox.diversityLabel">Đa dạng nội dung</label>
+                <label for="weight-diversity">
+                  <span data-i18n="interactive.sandbox.diversityLabel">Đa dạng nội dung</span>
+                  <span class="weight-value" id="weight-diversity-value">50</span>
+                </label>
                 <input type="range" id="weight-diversity" min="0" max="100" value="50">
               </div>
               <p class="control-hint" data-i18n="interactive.sandbox.hint">Kéo các thanh trượt để điều chỉnh cách thuật toán xếp hạng nội dung.</p>
             </div>
           
             <div class="sandbox-stats">
-              <div class="balance-meter">
-                <span data-i18n="interactive.sandbox.balanceText">Điểm cân bằng thuật toán: <strong id="algo-balance">0</strong>/100</span>
+              <div class="balance-meter balance-excellent">
+                <div class="balance-header">
+                  <span data-i18n="interactive.sandbox.balanceLabel">Điểm cân bằng thuật toán:</span>
+                  <strong id="algo-balance">100</strong>/100
+                  <span class="balance-rating" id="balance-rating">Hoàn hảo</span>
+                </div>
+                <p class="balance-hint" data-i18n="interactive.sandbox.balanceHint">
+                  <i class="fas fa-info-circle"></i>
+                  Điểm cân bằng đo lường mức độ công bằng của thuật toán. 100 điểm khi 3 yếu tố cân bằng (33-33-33), giảm khi mất cân bằng.
+                </p>
               </div>
             </div>
           
